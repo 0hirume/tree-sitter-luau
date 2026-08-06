@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   push:
@@ -22,16 +22,17 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: jdx/mise-action@v3
+      - name: install tools
+        uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
 
-      - name: Check
+      - name: check
         run: mise run check
 
-      - name: Configure CMake
+      - name: configure cmake
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
 
-      - name: Build with CMake
+      - name: build with cmake
         run: cmake --build build --config Release
 
-      - name: Build with Make
+      - name: build with make
         run: make CC=clang

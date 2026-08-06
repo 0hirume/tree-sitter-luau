@@ -1,16 +1,36 @@
-const ROOT = path self | path dirname | path dirname
+const ROOT: string = path self | path dirname | path dirname
 
-def main [helix] {
-  let target = $helix | path expand | path join "runtime" "queries" "luau"
-  let queries = ["highlights.scm" "indents.scm" "injections.scm" "locals.scm" "textobjects.scm"]
+def fail [message: string]: nothing -> error {
+    error make {
+        msg: $message
+        label: {
+            text: $message
+            span: (metadata $message).span
+        }
+    }
+}
 
-  if not ($target | path exists) {
-    error make { msg: $"Helix Luau query directory does not exist: ($target)" }
-  }
+def main [
+    helix: path # Helix checkout to receive the queries.
+]: nothing -> nothing {
+    let target: path = $helix | path expand | path join runtime queries luau
+    let queries: list<string> = [
+        highlights.scm
+        indents.scm
+        injections.scm
+        locals.scm
+        textobjects.scm
+    ]
 
-  for query in $queries {
-    cp ($ROOT | path join "queries" $query) ($target | path join $query)
-  }
+    if not ($target | path exists) {
+        fail $"Helix Luau query directory does not exist: ($target)"
+    }
 
-  print $"Copied ($queries | length) Luau queries to ($target)"
+    for query: string in $queries {
+        try {
+            cp ($ROOT | path join queries $query) ($target | path join $query)
+        } catch {|error| fail $"Failed to copy ($query): ($error.msg)" }
+    }
+
+    print $"Copied ($queries | length) Luau queries to ($target)"
 }
