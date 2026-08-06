@@ -9,7 +9,7 @@ const answer: number = 42
 declare extern type Widget with
 -- <- keyword.storage.modifier
 --      ^ keyword.storage.modifier
---             ^ keyword.function
+--             ^ keyword.storage.type
 --                  ^ type
   read name: string
   -- <- keyword.storage.modifier
