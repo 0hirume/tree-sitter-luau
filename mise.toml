@@ -12,6 +12,18 @@ run = "tree-sitter generate --js-runtime native --abi 15"
 sources = ["grammar.js", "src/scanner.c"]
 outputs = ["src/grammar.json", "src/node-types.json", "src/parser.c"]
 
+[tasks."queries:sync"]
+description = "Generate query data from the vendored snapshot"
+run = "nu scripts/queries.nu sync"
+
+[tasks."queries:check"]
+description = "Check generated query data for drift"
+run = "nu scripts/queries.nu check"
+
+[tasks."queries:update"]
+description = "Import Roblox types from a Creator Docs checkout"
+run = "nu scripts/queries.nu update"
+
 [tasks.test]
 description = "Run the parser corpus and query tests"
 depends = ["generate"]
@@ -25,7 +37,7 @@ run = "nu scripts/test-upstream.nu"
 
 [tasks.lint]
 description = "Check JavaScript, formatting, and generated parser drift"
-depends = ["generate"]
+depends = ["generate", "queries:check"]
 run = [
   "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
   "oxfmt --check grammar.js tree-sitter.json test/config.json .github/workflows/ci.yml README.md",

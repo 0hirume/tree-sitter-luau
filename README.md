@@ -46,6 +46,20 @@ mise run format
 Edit `grammar.js` for grammar rules, `src/scanner.c` for external tokens, and `queries/` for editor
 queries. `mise run generate` refreshes the generated files under `src/`.
 
+Roblox type highlights are generated from the vendored snapshot in `spec/roblox-types.json`.
+Normal development uses that snapshot and does not require a Creator Docs checkout:
+
+```sh
+nu scripts/queries.nu check
+nu scripts/queries.nu sync
+```
+
+Import a newer snapshot from an explicit Creator Docs checkout with:
+
+```sh
+nu scripts/queries.nu update <creator-docs-directory>
+```
+
 ## License
 
 MIT

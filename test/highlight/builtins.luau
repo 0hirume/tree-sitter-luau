@@ -23,3 +23,37 @@ local handlers = {
   run = function() end,
   -- <- function.method
 }
+
+local part: Part = Instance.new("Part")
+--          ^^^^ type.builtin
+
+local annotation: WorkspaceAnnotation? = nil
+--                ^^^^^^^^^^^^^^^^^^^ type.builtin
+
+local finite = math.isfinite(1)
+--             ^ variable.builtin
+--                  ^ function.builtin
+
+local reflected = types.singleton("string")
+--                ^ variable.builtin
+--                      ^ function.builtin
+
+local reflectedAny = types.any
+--                   ^ variable.builtin
+--                         ^ constant.builtin
+
+local noContent = Content.none
+--                ^ variable.builtin
+--                        ^ constant.builtin
+
+local output = print
+--             ^^^^^ function.builtin
+
+local print = output
+--    ^^^^^ variable
+
+local dataModel = game
+--                ^^^^ variable.builtin
+
+local game = dataModel
+--    ^^^^ variable
