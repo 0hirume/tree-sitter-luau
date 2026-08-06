@@ -52,6 +52,11 @@ run = [
   "clang-format -i src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
 ]
 
+[tasks."copy:queries"]
+description = "Copy runtime queries into the provided Helix checkout"
+depends = ["queries:sync"]
+run = "nu scripts/copy-queries.nu"
+
 [tasks.check]
 description = "Run every project check"
 depends = ["lint", "test", "test:upstream"]

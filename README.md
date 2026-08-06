@@ -41,10 +41,13 @@ mise run test
 mise run test:upstream
 mise run lint
 mise run format
+mise run copy:queries -- <helix-checkout>
 ```
 
 Edit `grammar.js` for grammar rules, `src/scanner.c` for external tokens, and `queries/` for editor
 queries. `mise run generate` refreshes the generated files under `src/`.
+
+`mise run copy:queries -- <helix-checkout>` copies the queries used by Helix into that checkout.
 
 Roblox type highlights are generated from the vendored snapshot in `spec/roblox-types.json`.
 Normal development uses that snapshot and does not require a Creator Docs checkout:
