@@ -34,4 +34,4 @@ if ($files | is-empty) {
   error make { msg: "Luau submodule contains no .luau fixtures" }
 }
 
-tree-sitter parse --grammar-path . ...$files --quiet --stat
+tree-sitter parse --config-path test/config.json --grammar-path . ...$files --quiet --stat
