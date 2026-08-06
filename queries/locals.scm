@@ -9,12 +9,13 @@
   (type_function_declaration)
 ] @local.scope
 
-(binding name: (identifier) @local.definition)
-(parameter name: (identifier) @local.definition)
-(declare_parameter name: (identifier) @local.definition)
+; Helix uses typed definitions; tree-sitter-cli still requires the bare capture.
+(binding name: (identifier) @local.definition @local.definition.variable)
+(parameter name: (identifier) @local.definition @local.definition.variable.parameter)
+(declare_parameter name: (identifier) @local.definition @local.definition.variable.parameter)
 
-(local_function_declaration name: (identifier) @local.definition)
-(const_function_declaration name: (identifier) @local.definition)
-(class_declaration name: (identifier) @local.definition)
+(local_function_declaration name: (identifier) @local.definition @local.definition.function)
+(const_function_declaration name: (identifier) @local.definition @local.definition.function)
+(class_declaration name: (identifier) @local.definition @local.definition.type)
 
 (identifier) @local.reference
