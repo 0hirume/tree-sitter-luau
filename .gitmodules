@@ -1,0 +1,3 @@
+[submodule "test/upstream/luau"]
+	path = test/upstream/luau
+	url = https://github.com/luau-lang/luau.git

@@ -1,0 +1,2 @@
+# Intentionally malformed parser fixture: `export 1` is not valid call syntax.
+tests/require/without_config/export_keyword/export_as_function.luau
