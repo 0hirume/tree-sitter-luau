@@ -123,8 +123,8 @@ def "main update" [
     }
 
     let paths: list<path> = (
-    (glob $"($class_dir | str replace --all (char backslash) /)/*.yaml")
-    | append (glob $"($datatype_dir | str replace --all (char backslash) /)/*.yaml")
+    (glob $"($class_dir | str replace --all (char --unicode 5c) /)/*.yaml")
+    | append (glob $"($datatype_dir | str replace --all (char --unicode 5c) /)/*.yaml")
   )
     let types: list<string> = (
     $paths
