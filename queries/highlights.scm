@@ -14,7 +14,8 @@
     "tonumber" "tostring" "type"
     "typeof" "unpack" "UserSettings"
     "version" "warn" "workspace"
-    "xpcall"))
+    "xpcall")
+  (#is-not? local))
 
 ((identifier) @variable.builtin
   (#any-of? @variable.builtin
@@ -394,7 +395,8 @@
     "tonumber" "tostring" "type"
     "typeof" "unpack" "UserSettings"
     "version" "warn" "workspace"
-    "xpcall"))
+    "xpcall")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin

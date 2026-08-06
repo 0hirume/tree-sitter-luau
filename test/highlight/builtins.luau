@@ -57,3 +57,19 @@ local dataModel = game
 
 local game = dataModel
 --    ^^^^ variable
+
+do
+  local spawn = output
+  consume(spawn)
+  --      ^^^^^ variable
+  spawn()
+  -- <- variable
+end
+
+do
+  const spawn = output
+  consume(spawn)
+  --      ^^^^^ variable
+  spawn()
+  -- <- variable
+end
