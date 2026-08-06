@@ -28,16 +28,16 @@ description = "Check JavaScript, formatting, and generated parser drift"
 depends = ["generate"]
 run = [
   "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
-  "oxfmt --check grammar.js tree-sitter.json README.md",
-  "clang-format --dry-run --Werror src/scanner.c bindings/c/tree-sitter-luau.h",
+  "oxfmt --check grammar.js tree-sitter.json test/config.json README.md",
+  "clang-format --dry-run --Werror src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
   "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter",
 ]
 
 [tasks.format]
 description = "Format authored source and metadata"
 run = [
-  "oxfmt grammar.js tree-sitter.json README.md",
-  "clang-format -i src/scanner.c bindings/c/tree-sitter-luau.h",
+  "oxfmt grammar.js tree-sitter.json test/config.json README.md",
+  "clang-format -i src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
 ]
 
 [tasks.check]

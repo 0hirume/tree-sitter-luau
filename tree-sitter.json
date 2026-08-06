@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
   "grammars": [
     {
       "name": "luau",
@@ -6,10 +7,10 @@
       "scope": "source.luau",
       "path": ".",
       "file-types": ["luau"],
-      "injection-regex": "^luau$",
       "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
       "locals": "queries/locals.scm",
-      "injections": "queries/injections.scm"
+      "injection-regex": "^luau$"
     }
   ],
   "metadata": {

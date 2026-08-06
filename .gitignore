@@ -5,9 +5,11 @@ target/
 
 *.dll
 *.dylib
+*.a
 *.lib
 *.o
 *.obj
+*.pc
 *.so
 *.so.*
 *.wasm

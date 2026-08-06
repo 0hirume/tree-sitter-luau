@@ -9,6 +9,15 @@ user-defined classes.
 
 Queries are included for highlighting, locals, indentation, folding, text objects, and injections.
 
+## C library
+
+The parser can be built and installed with CMake or Make.
+
+```sh
+cmake -S . -B build
+cmake --build build
+```
+
 ## Development
 
 Install the tools declared in `mise.toml` and initialize the Luau test corpus:
