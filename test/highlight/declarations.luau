@@ -23,3 +23,12 @@ end
 --               ^ keyword.function
 --                        ^ function
 --                               ^ variable.parameter
+
+declare utf8: {
+-- <- keyword.storage.modifier
+--      ^^^^ variable.builtin
+  codepoint: (string, number?, number?) -> (...number),
+  -- <- variable.other.member
+  codes: (string) -> ((string, number) -> (number, number), string, number),
+  -- <- variable.other.member
+}

@@ -4077,14 +4077,22 @@
                 "value": ","
               },
               {
-                "type": "SYMBOL",
-                "name": "_variadic_type_pack"
+                "type": "PREC",
+                "value": 1,
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_variadic_type_pack"
+                }
               }
             ]
           },
           {
-            "type": "SYMBOL",
-            "name": "_variadic_type_pack"
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "SYMBOL",
+              "name": "_variadic_type_pack"
+            }
           }
         ]
       }

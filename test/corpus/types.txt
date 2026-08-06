@@ -137,3 +137,86 @@ end
       (return_statement
         (expression_list
           (identifier))))))
+
+===============================
+Parenthesized variadic type pack
+===============================
+
+declare utf8: {
+  codepoint: (string, number?, number?) -> (...number),
+  codes: (string) -> ((string, number) -> (number, number), string, number),
+}
+type Mapper = (...number) -> string
+declare function points(...: Vector3): ...Vector3
+
+---
+
+(source_file
+  (declare_global
+    (identifier)
+    (table_type
+      (property_type
+        (identifier)
+        (function_type
+          (function_type_parameters
+            (function_type_parameter
+              (type_reference
+                (identifier)))
+            (function_type_parameter
+              (optional_type
+                (type_reference
+                  (identifier))))
+            (function_type_parameter
+              (optional_type
+                (type_reference
+                  (identifier)))))
+          (type_pack
+            (type_list
+              (variadic_type_pack
+                (type_reference
+                  (identifier)))))))
+      (property_type
+        (identifier)
+        (function_type
+          (function_type_parameters
+            (function_type_parameter
+              (type_reference
+                (identifier))))
+          (type_pack
+            (type_list
+              (function_type
+                (function_type_parameters
+                  (function_type_parameter
+                    (type_reference
+                      (identifier)))
+                  (function_type_parameter
+                    (type_reference
+                      (identifier))))
+                (type_pack
+                  (type_list
+                    (type_reference
+                      (identifier))
+                    (type_reference
+                      (identifier)))))
+              (type_reference
+                (identifier))
+              (type_reference
+                (identifier))))))))
+  (type_alias_declaration
+    (identifier)
+    (function_type
+      (function_type_parameters
+        (variadic_type_pack
+          (type_reference
+            (identifier))))
+      (type_reference
+        (identifier))))
+  (declare_function
+    (identifier)
+    (declare_parameter_list
+      (declare_variadic_parameter
+        (type_reference
+          (identifier))))
+    (variadic_type_pack
+      (type_reference
+        (identifier)))))

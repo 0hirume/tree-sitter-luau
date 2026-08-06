@@ -671,8 +671,8 @@ export default grammar({
       prec.right(
         choice(
           commaSep1($._type),
-          seq(commaSep1($._type), ",", $._variadic_type_pack),
-          $._variadic_type_pack,
+          seq(commaSep1($._type), ",", prec(1, $._variadic_type_pack)),
+          prec(1, $._variadic_type_pack),
         ),
       ),
 
