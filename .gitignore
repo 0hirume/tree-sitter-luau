@@ -1,0 +1,15 @@
+.cache/
+build/
+node_modules/
+target/
+
+*.dll
+*.dylib
+*.lib
+*.o
+*.obj
+*.so
+*.so.*
+*.wasm
+
+mise.lock
