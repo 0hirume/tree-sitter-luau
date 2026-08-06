@@ -32,7 +32,8 @@ local value = factory<<string, number>>(config).result[index]:format("%d")
         (arguments
           (expression_list
             (string
-              (quoted_string))))))))
+              (quoted_string
+                (string_content)))))))))
 
 ==================
 If and binary expressions
@@ -92,6 +93,7 @@ local value = {
           (identifier)
           (string
             (interpolated_string
+              (interpolation_content)
               (identifier))))
         (table_field
           (call_expression
@@ -133,7 +135,8 @@ local first, second = object:method<<(string, number)>>(1, "a")
           (expression_list
             (number)
             (string
-              (quoted_string))))))))
+              (quoted_string
+                (string_content)))))))))
 
 ==================
 Nested interpolation
@@ -179,7 +182,11 @@ local compact = "a\z
                 (arguments
                   (expression_list
                     (string
-                      (quoted_string)))))
+                      (quoted_string
+                        (string_content)
+                        (escape_sequence
+                          (simple_escape))
+                        (string_content))))))
               (arguments))
             (number))))))
   (local_declaration
@@ -188,7 +195,11 @@ local compact = "a\z
         (identifier)))
     (expression_list
       (string
-        (quoted_string)))))
+        (quoted_string
+          (string_content)
+          (escape_sequence
+            (whitespace_escape))
+          (string_content))))))
 
 ==================
 Table call argument

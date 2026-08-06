@@ -97,7 +97,8 @@ end
         (identifier)))
     (extern_property
       (access_qualifier)
-      (quoted_string)
+      (quoted_string
+        (string_content))
       (type_reference
         (identifier)))
     (extern_indexer

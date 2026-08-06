@@ -86,14 +86,7 @@ export default grammar({
 
   extras: ($) => [/[ \t\v\f\r\n]/, $._comment],
 
-  externals: ($) => [
-    $.block_comment,
-    $.long_string,
-    $._interpolated_string,
-    $._interpolation_start,
-    $._interpolation_middle,
-    $._interpolation_end,
-  ],
+  externals: ($) => [$.block_comment, $.long_string],
 
   reserved: {
     global: (_) => HARD_KEYWORDS,
@@ -508,35 +501,62 @@ export default grammar({
 
     _string_literal: ($) => choice($.quoted_string, $.long_string),
 
-    quoted_string: (_) =>
-      token(
-        choice(
-          seq(
-            '"',
-            repeat(
-              choice(/[^"\\\r\n]+/, seq("\\z", repeat(/[ \t\v\f\r\n]/)), /\\[^\r\n]/, /\\\r?\n/),
-            ),
-            '"',
-          ),
-          seq(
-            "'",
-            repeat(
-              choice(/[^'\\\r\n]+/, seq("\\z", repeat(/[ \t\v\f\r\n]/)), /\\[^\r\n]/, /\\\r?\n/),
-            ),
-            "'",
-          ),
+    quoted_string: ($) =>
+      choice(
+        seq(
+          '"',
+          repeat(choice(alias($._double_string_content, $.string_content), $.escape_sequence)),
+          token.immediate('"'),
+        ),
+        seq(
+          "'",
+          repeat(choice(alias($._single_string_content, $.string_content), $.escape_sequence)),
+          token.immediate("'"),
         ),
       ),
 
-    interpolated_string: ($) =>
+    _double_string_content: (_) => token.immediate(prec(1, /[^"\\\r\n]+/)),
+
+    _single_string_content: (_) => token.immediate(prec(1, /[^'\\\r\n]+/)),
+
+    interpolation_content: (_) => token.immediate(prec(1, /[^`{\\\r\n]+/)),
+
+    escape_sequence: ($) =>
       choice(
-        $._interpolated_string,
-        seq(
-          $._interpolation_start,
-          field("expression", $._expression),
-          repeat(seq($._interpolation_middle, field("expression", $._expression))),
-          $._interpolation_end,
+        $.unicode_escape,
+        $.decimal_escape,
+        $.hex_escape,
+        $.whitespace_escape,
+        $.simple_escape,
+      ),
+
+    unicode_escape: ($) =>
+      seq(
+        token.immediate("\\u"),
+        token.immediate("{"),
+        alias(token.immediate(/[0-9a-fA-F]+/), $.escape_codepoint),
+        token.immediate("}"),
+      ),
+
+    decimal_escape: (_) => token.immediate(/\\[0-9]{1,3}/),
+
+    hex_escape: (_) => token.immediate(/\\x[0-9a-fA-F]{2}/),
+
+    whitespace_escape: (_) => token.immediate(prec(2, seq("\\z", repeat(/[ \t\v\f\r\n]/)))),
+
+    simple_escape: (_) => token.immediate(choice(/\\[^\r\n]/, /\\\r?\n/)),
+
+    interpolated_string: ($) =>
+      seq(
+        "`",
+        repeat(
+          choice(
+            $.interpolation_content,
+            $.escape_sequence,
+            seq("{", field("expression", $._expression), "}"),
+          ),
         ),
+        token.immediate("`"),
       ),
 
     type_alias_declaration: ($) =>

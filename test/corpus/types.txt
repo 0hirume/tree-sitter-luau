@@ -86,9 +86,11 @@ type Leading = | string | number
       (union_type
         (union_type
           (string_type
-            (quoted_string))
+            (quoted_string
+              (string_content)))
           (string_type
-            (quoted_string)))
+            (quoted_string
+              (string_content))))
         (boolean_type))
       (nil_type)))
   (type_alias_declaration

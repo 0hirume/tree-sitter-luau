@@ -19,7 +19,8 @@ export()
         (identifier)))
     (expression_list
       (string
-        (quoted_string))))
+        (quoted_string
+          (string_content)))))
   (const_declaration
     (binding_list
       (binding
@@ -232,4 +233,5 @@ class { name = "value" }
           (table_field
             (identifier)
             (string
-              (quoted_string))))))))
+              (quoted_string
+                (string_content)))))))))
