@@ -1,0 +1,137 @@
+==================
+Type aliases
+==================
+
+export type Result<T = string, U... = ()> = {
+  read value: T,
+  write [string]: unknown,
+  callback: <A, R...>(value: A, ...R) -> (A, R...),
+} & Tagged?
+
+---
+
+(source_file
+  (type_alias_declaration
+    (identifier)
+    (generic_definition_list
+      (generic_type_definition
+        (identifier)
+        (type_reference
+          (identifier)))
+      (generic_type_pack_definition
+        (identifier)
+        (type_pack)))
+    (intersection_type
+      (table_type
+        (property_type
+          (access_qualifier)
+          (identifier)
+          (type_reference
+            (identifier)))
+        (indexer_type
+          (access_qualifier)
+          (type_reference
+            (identifier))
+          (type_reference
+            (identifier)))
+        (property_type
+          (identifier)
+          (function_type
+            (generic_parameter_list
+              (generic_type
+                (identifier))
+              (generic_type_pack
+                (identifier)))
+            (function_type_parameters
+              (function_type_parameter
+                (identifier)
+                (type_reference
+                  (identifier)))
+              (variadic_type_pack
+                (type_reference
+                  (identifier))))
+            (type_pack
+              (type_list
+                (type_reference
+                  (identifier))
+                (generic_type_pack
+                  (identifier)))))))
+      (optional_type
+        (type_reference
+          (identifier))))))
+
+==================
+Type packs and singleton types
+==================
+
+type Values<T...> = () -> T...
+type Names = "first" | "second" | true | nil
+type Leading = | string | number
+
+---
+
+(source_file
+  (type_alias_declaration
+    (identifier)
+    (generic_definition_list
+      (generic_type_pack_definition
+        (identifier)))
+    (function_type
+      (function_type_parameters)
+      (generic_type_pack
+        (identifier))))
+  (type_alias_declaration
+    (identifier)
+    (union_type
+      (union_type
+        (union_type
+          (string_type
+            (quoted_string))
+          (string_type
+            (quoted_string)))
+        (boolean_type))
+      (nil_type)))
+  (type_alias_declaration
+    (identifier)
+    (leading_type
+      (union_type
+        (type_reference
+          (identifier))
+        (type_reference
+          (identifier))))))
+
+==================
+Type function
+==================
+
+export type function selectType(value)
+  if value == types.number then
+    return types.string
+  end
+  return value
+end
+
+---
+
+(source_file
+  (type_function_declaration
+    (identifier)
+    (parameter_list
+      (parameter
+        (identifier)))
+    (block
+      (if_statement
+        (binary_expression
+          (identifier)
+          (field_expression
+            (identifier)
+            (identifier)))
+        (block
+          (return_statement
+            (expression_list
+              (field_expression
+                (identifier)
+                (identifier))))))
+      (return_statement
+        (expression_list
+          (identifier))))))

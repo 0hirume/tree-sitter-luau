@@ -1,0 +1,92 @@
+==================
+Const declaration
+==================
+
+const answer: number = 42
+const first, second = getValues()
+
+---
+
+(source_file
+  (const_declaration
+    (binding_list
+      (binding
+        (identifier)
+        (type_reference
+          (identifier))))
+    (expression_list
+      (number)))
+  (const_declaration
+    (binding_list
+      (binding
+        (identifier))
+      (binding
+        (identifier)))
+    (expression_list
+      (call_expression
+        (identifier)
+        (arguments)))))
+
+==================
+Const function with attribute
+==================
+
+@deprecated
+const function answer<T>(value: T): T
+  return value
+end
+
+---
+
+(source_file
+  (const_function_declaration
+    (attributes
+      (attribute
+        (identifier)))
+    (identifier)
+    (generic_parameter_list
+      (generic_type
+        (identifier)))
+    (parameter_list
+      (parameter
+        (identifier)
+        (type_reference
+          (identifier))))
+    (type_reference
+      (identifier))
+    (block
+      (return_statement
+        (expression_list
+          (identifier))))))
+
+==================
+Const remains contextual
+==================
+
+local const = function(value) return value end
+const { value = 42 }
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (function_expression
+        (parameter_list
+          (parameter
+            (identifier)))
+        (block
+          (return_statement
+            (expression_list
+              (identifier)))))))
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (table_constructor
+          (table_field
+            (identifier)
+            (number)))))))

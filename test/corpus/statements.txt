@@ -1,0 +1,143 @@
+==================
+Control flow
+==================
+
+for index: number = 1, 10, 2 do
+  if index % 2 == 0 then
+    continue
+  elseif index > 8 then
+    break
+  else
+    print(index)
+  end
+end
+
+for key: string, value in pairs(values) do
+  repeat
+    value -= 1
+  until value == 0
+end
+
+---
+
+(source_file
+  (numeric_for_statement
+    (binding
+      (identifier)
+      (type_reference
+        (identifier)))
+    (number)
+    (number)
+    (number)
+    (block
+      (if_statement
+        (binary_expression
+          (binary_expression
+            (identifier)
+            (number))
+          (number))
+        (block
+          (continue_statement))
+        (elseif_clause
+          (binary_expression
+            (identifier)
+            (number))
+          (block
+            (break_statement)))
+        (else_clause
+          (block
+            (expression_statement
+              (call_expression
+                (identifier)
+                (arguments
+                  (expression_list
+                    (identifier))))))))))
+  (generic_for_statement
+    (binding_list
+      (binding
+        (identifier)
+        (type_reference
+          (identifier)))
+      (binding
+        (identifier)))
+    (expression_list
+      (call_expression
+        (identifier)
+        (arguments
+          (expression_list
+            (identifier)))))
+    (block
+      (repeat_statement
+        (block
+          (compound_assignment_statement
+            (identifier)
+            (number)))
+        (binary_expression
+          (identifier)
+          (number))))))
+
+==================
+Functions and assignments
+==================
+
+local function identity<T>(value: T): T
+  return value
+end
+
+function module.create(name: string): Result
+  local result = identity(name)
+  module.current = result
+  return result
+end
+
+---
+
+(source_file
+  (local_function_declaration
+    (identifier)
+    (generic_parameter_list
+      (generic_type
+        (identifier)))
+    (parameter_list
+      (parameter
+        (identifier)
+        (type_reference
+          (identifier))))
+    (type_reference
+      (identifier))
+    (block
+      (return_statement
+        (expression_list
+          (identifier)))))
+  (function_declaration
+    (function_name
+      (identifier)
+      (identifier))
+    (parameter_list
+      (parameter
+        (identifier)
+        (type_reference
+          (identifier))))
+    (type_reference
+      (identifier))
+    (block
+      (local_declaration
+        (binding_list
+          (binding
+            (identifier)))
+        (expression_list
+          (call_expression
+            (identifier)
+            (arguments
+              (expression_list
+                (identifier))))))
+      (assignment_statement
+        (assignment_target_list
+          (field_expression
+            (identifier)
+            (identifier)))
+        (expression_list
+          (identifier)))
+      (return_statement
+        (expression_list
+          (identifier))))))

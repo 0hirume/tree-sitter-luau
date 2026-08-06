@@ -1,0 +1,215 @@
+==================
+Postfix expressions
+==================
+
+local value = factory<<string, number>>(config).result[index]:format("%d")
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (method_call_expression
+        (index_expression
+          (field_expression
+            (type_instantiation_expression
+              (identifier)
+              (explicit_type_arguments
+                (type_argument_list
+                  (type_reference
+                    (identifier))
+                  (type_reference
+                    (identifier))))
+              (arguments
+                (expression_list
+                  (identifier))))
+            (identifier))
+          (identifier))
+        (identifier)
+        (arguments
+          (expression_list
+            (string
+              (quoted_string))))))))
+
+==================
+If and binary expressions
+==================
+
+local result = if ready and count > 0 then first .. second else fallback
+local power = -2 ^ 4
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (if_expression
+        (binary_expression
+          (identifier)
+          (binary_expression
+            (identifier)
+            (number)))
+        (binary_expression
+          (identifier)
+          (identifier))
+        (identifier))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (unary_expression
+        (binary_expression
+          (number)
+          (number))))))
+
+==================
+Tables and interpolation
+==================
+
+local value = {
+  name = `item-{index}`,
+  [getKey()] = [=[raw value]=],
+  true,
+}
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (table_constructor
+        (table_field
+          (identifier)
+          (string
+            (interpolated_string
+              (identifier))))
+        (table_field
+          (call_expression
+            (identifier)
+            (arguments))
+          (string
+            (long_string)))
+        (table_field
+          (boolean))))))
+
+==================
+Explicit method type arguments
+==================
+
+local first, second = object:method<<(string, number)>>(1, "a")
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier))
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (identifier)
+        (identifier)
+        (explicit_type_arguments
+          (type_argument_list
+            (type_pack
+              (type_list
+                (type_reference
+                  (identifier))
+                (type_reference
+                  (identifier))))))
+        (arguments
+          (expression_list
+            (number)
+            (string
+              (quoted_string))))))))
+
+==================
+Nested interpolation
+==================
+
+local nested = `{ { value = true } }`
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (interpolated_string
+          (table_constructor
+            (table_field
+              (identifier)
+              (boolean))))))))
+
+==================
+Chained calls with string escapes
+==================
+
+assert(loadstring("return 1\n--comentário sem EOL no final")() == 1)
+local compact = "a\z
+  b"
+
+---
+
+(source_file
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (expression_list
+          (binary_expression
+            (call_expression
+              (call_expression
+                (identifier)
+                (arguments
+                  (expression_list
+                    (string
+                      (quoted_string)))))
+              (arguments))
+            (number))))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (quoted_string)))))
+
+==================
+Table call argument
+==================
+
+assert(table.concat{} == "")
+
+---
+
+(source_file
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (expression_list
+          (binary_expression
+            (call_expression
+              (field_expression
+                (identifier)
+                (identifier))
+              (arguments
+                (table_constructor)))
+            (string
+              (quoted_string))))))))

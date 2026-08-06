@@ -1,0 +1,235 @@
+==================
+Exported values
+==================
+
+export local version = "1.0.0"
+export const TAU = math.pi * 2
+@checked export function add(a: number, b: number): number
+  return a + b
+end
+export = 5
+export()
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (quoted_string))))
+  (const_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (binary_expression
+        (field_expression
+          (identifier)
+          (identifier))
+        (number))))
+  (function_declaration
+    (attributes
+      (attribute
+        (identifier)))
+    (function_name
+      (identifier))
+    (parameter_list
+      (parameter
+        (identifier)
+        (type_reference
+          (identifier)))
+      (parameter
+        (identifier)
+        (type_reference
+          (identifier))))
+    (type_reference
+      (identifier))
+    (block
+      (return_statement
+        (expression_list
+          (binary_expression
+            (identifier)
+            (identifier))))))
+  (assignment_statement
+    (assignment_target_list
+      (identifier))
+    (expression_list
+      (number)))
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments))))
+
+==================
+Integer literals
+==================
+
+local decimal = 1_000i
+local hexadecimal = 0xff_ffi
+local binary = 0b101010i
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (integer)))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (integer)))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (integer))))
+
+==================
+User-defined classes
+==================
+
+class Point
+  public x: number
+  public y: number
+
+  function magnitude(self): number
+    return math.sqrt(self.x * self.x + self.y * self.y)
+  end
+
+  public function zero(): Point
+    return Point { x = 0, y = 0 }
+  end
+end
+
+export class Child extends package.Base
+  public value
+end
+
+local point = Point { x = 1, y = 2 }
+
+---
+
+(source_file
+  (class_declaration
+    (identifier)
+    (class_property
+      (identifier)
+      (type_reference
+        (identifier)))
+    (class_property
+      (identifier)
+      (type_reference
+        (identifier)))
+    (class_method
+      (identifier)
+      (parameter_list
+        (parameter
+          (identifier)))
+      (type_reference
+        (identifier))
+      (block
+        (return_statement
+          (expression_list
+            (call_expression
+              (field_expression
+                (identifier)
+                (identifier))
+              (arguments
+                (expression_list
+                  (binary_expression
+                    (binary_expression
+                      (field_expression
+                        (identifier)
+                        (identifier))
+                      (field_expression
+                        (identifier)
+                        (identifier)))
+                    (binary_expression
+                      (field_expression
+                        (identifier)
+                        (identifier))
+                      (field_expression
+                        (identifier)
+                        (identifier)))))))))))
+    (class_method
+      (identifier)
+      (parameter_list)
+      (type_reference
+        (identifier))
+      (block
+        (return_statement
+          (expression_list
+            (call_expression
+              (identifier)
+              (arguments
+                (table_constructor
+                  (table_field
+                    (identifier)
+                    (number))
+                  (table_field
+                    (identifier)
+                    (number))))))))))
+  (class_declaration
+    (identifier)
+    (class_reference
+      (identifier)
+      (identifier))
+    (class_property
+      (identifier)))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (call_expression
+        (identifier)
+        (arguments
+          (table_constructor
+            (table_field
+              (identifier)
+              (number))
+            (table_field
+              (identifier)
+              (number))))))))
+
+==================
+Class remains contextual
+==================
+
+local class = function(value) return value end
+class { name = "value" }
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (function_expression
+        (parameter_list
+          (parameter
+            (identifier)))
+        (block
+          (return_statement
+            (expression_list
+              (identifier)))))))
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (table_constructor
+          (table_field
+            (identifier)
+            (string
+              (quoted_string))))))))
