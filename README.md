@@ -63,9 +63,6 @@ Import a newer snapshot from an explicit Creator Docs checkout with:
 nu scripts/queries.nu update <creator-docs-directory>
 ```
 
-Refresh the compatibility baseline from an explicit polychromatist grammar checkout with
-`nu scripts/queries.nu update-compatibility <grammar-directory>`.
-
 ## License
 
 MIT

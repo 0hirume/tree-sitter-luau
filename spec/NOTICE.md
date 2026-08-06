@@ -6,6 +6,3 @@ and directories are recorded in the snapshot.
 
 Roblox Creator Docs content is licensed under the Creative Commons Attribution 4.0 International
 license. The applicable license text is included in `spec/LICENSE`.
-
-`roblox-compatibility.json` records the Roblox type baseline from the attributed MIT-licensed
-polychromatist grammar.
