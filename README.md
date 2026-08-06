@@ -49,8 +49,8 @@ queries. `mise run generate` refreshes the generated files under `src/`.
 
 `mise run copy:queries -- <helix-checkout>` copies the queries used by Helix into that checkout.
 
-Roblox type highlights are generated from the vendored snapshot in `spec/roblox-types.json`.
-Normal development uses that snapshot and does not require a Creator Docs checkout:
+Roblox type highlights are generated from the vendored snapshots in `spec/`. Normal development
+uses those snapshots and does not require either upstream checkout:
 
 ```sh
 nu scripts/queries.nu check
@@ -62,6 +62,9 @@ Import a newer snapshot from an explicit Creator Docs checkout with:
 ```sh
 nu scripts/queries.nu update <creator-docs-directory>
 ```
+
+Refresh the compatibility baseline from an explicit polychromatist grammar checkout with
+`nu scripts/queries.nu update-compatibility <grammar-directory>`.
 
 ## License
 

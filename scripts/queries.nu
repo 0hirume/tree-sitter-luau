@@ -9,6 +9,10 @@ def spec-path [] {
   $ROOT | path join "spec" "roblox-types.json"
 }
 
+def compatibility-path [] {
+  $ROOT | path join "spec" "roblox-compatibility.json"
+}
+
 def query-path [] {
   $ROOT | path join "queries" "highlights.scm"
 }
@@ -50,7 +54,9 @@ def render-types [types: list<string>] {
 
 def generated-query [] {
   let spec = open (spec-path)
-  let body = render-types $spec.types
+  let compatibility = open (compatibility-path)
+  let types = $spec.types | append $compatibility.types
+  let body = render-types $types
   $"; Source: Roblox/creator-docs ($spec.source.revision) (($spec.source.date))\n($body)"
 }
 
@@ -136,6 +142,64 @@ def "main update" [creator_docs: path] {
   print $"Imported ($types | length) Roblox types from ($checkout)"
 }
 
+def "main update-compatibility" [grammar: path] {
+  let checkout = $grammar | path expand
+  let relative = "helix-queries/highlights.scm"
+  let source = $checkout | path join $relative
+
+  if not ($source | path exists) {
+    fail $"Luau highlight query does not exist: ($source)"
+  }
+
+  let lines = open --raw $source | lines
+  let start = (
+    $lines
+    | enumerate
+    | where {|line| $line.item =~ 'type_name:.*@type.builtin'}
+    | first
+    | get index
+  )
+  let end = (
+    $lines
+    | enumerate
+    | skip ($start + 1)
+    | where {|line| $line.item == "(var"}
+    | first
+    | get index
+  )
+  let quote = char dq
+  let types = (
+    $lines
+    | skip $start
+    | take ($end - $start)
+    | each {|line|
+        $line
+        | split row $quote
+        | enumerate
+        | where {|part| ($part.index mod 2) == 1}
+        | get item
+      }
+    | flatten
+    | where {|name| $name =~ '^[A-Za-z_][A-Za-z0-9_]*$'}
+    | uniq
+    | sort
+  )
+  let snapshot = {
+    source: {
+      repository: "https://github.com/polychromatist/tree-sitter-luau"
+      revision: (git-value $checkout ["log" "-1" "--format=%H" "--" $relative])
+      date: (git-value $checkout ["log" "-1" "--format=%cs" "--" $relative])
+      query: $relative
+    }
+    types: $types
+  }
+
+  let json = $snapshot | to json --indent 2
+  $"($json)\n" | save --force (compatibility-path)
+  sync
+  print $"Imported ($types | length) compatibility types from ($checkout)"
+}
+
 def main [] {
-  fail "usage: nu scripts/queries.nu <check|sync|update <creator-docs>>"
+  fail "usage: nu scripts/queries.nu <check|sync|update <creator-docs>|update-compatibility <grammar>>"
 }

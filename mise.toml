@@ -24,6 +24,10 @@ run = "nu scripts/queries.nu check"
 description = "Import Roblox types from a Creator Docs checkout"
 run = "nu scripts/queries.nu update"
 
+[tasks."queries:update-compatibility"]
+description = "Import the legacy Roblox type highlight baseline"
+run = "nu scripts/queries.nu update-compatibility"
+
 [tasks.test]
 description = "Run the parser corpus and query tests"
 depends = ["generate"]

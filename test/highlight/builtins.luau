@@ -30,6 +30,9 @@ local part: Part = Instance.new("Part")
 local annotation: WorkspaceAnnotation? = nil
 --                ^^^^^^^^^^^^^^^^^^^ type.builtin
 
+local legacy: AnimationStreamTrack? = nil
+--            ^^^^^^^^^^^^^^^^^^^^ type.builtin
+
 local finite = math.isfinite(1)
 --             ^ variable.builtin
 --                  ^ function.builtin
