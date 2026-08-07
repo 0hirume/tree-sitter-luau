@@ -20,6 +20,8 @@ def main [
         injections.scm
         locals.scm
         textobjects.scm
+        rainbows.scm
+        tags.scm
     ]
 
     if not ($target | path exists) {
