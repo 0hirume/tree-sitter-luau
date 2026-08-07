@@ -41,3 +41,19 @@ function Widget.new(): Widget
 --              ^^^ function.method
 --                     ^^^^^^ type
 end
+
+type Value = source.ValueHolder<data.Entry>
+--           ^^^^^^ namespace
+--                  ^^^^^^^^^^^ type
+--                              ^^^^ namespace
+--                                   ^^^^^ type
+
+local source = require("source")
+--    ^^^^^^ variable
+
+local data = require("data")
+--    ^^^^ variable
+
+model:transform<<Record>>()
+-- <- namespace
+--    ^^^^^^^^^ function.method
