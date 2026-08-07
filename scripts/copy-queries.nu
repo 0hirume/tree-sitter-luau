@@ -11,28 +11,40 @@ def fail [message: string]: nothing -> error {
 }
 
 def main [
-    helix: path # Helix checkout to receive the queries.
+    editor: string # Editor query subset under queries/.
+    target: path # Query directory to receive the subset.
 ]: nothing -> nothing {
-    let target: path = $helix | path expand | path join runtime queries luau
-    let queries: list<string> = [
-        highlights.scm
-        indents.scm
-        injections.scm
-        locals.scm
-        textobjects.scm
-        rainbows.scm
-        tags.scm
-    ]
+    let source: path = $ROOT | path join queries $editor
+    let target: path = $target | path expand
+
+    if not ($source | path exists) {
+        fail $"Editor query subset does not exist: ($source)"
+    }
 
     if not ($target | path exists) {
-        fail $"Helix Luau query directory does not exist: ($target)"
+        mkdir $target
+    }
+
+    let source_glob: string = (
+        $source
+        | path join "*.scm"
+        | str replace --all (char --unicode 5c) "/"
+    )
+    let queries: list<string> = (
+        glob $source_glob
+        | each {|path| $path | path basename }
+        | sort
+    )
+
+    if ($queries | is-empty) {
+        fail $"Editor query subset is empty: ($source)"
     }
 
     for query: string in $queries {
         try {
-            cp ($ROOT | path join queries $query) ($target | path join $query)
+            cp ($source | path join $query) ($target | path join $query)
         } catch {|error| fail $"Failed to copy ($query): ($error.msg)" }
     }
 
-    print $"Copied ($queries | length) Luau queries to ($target)"
+    print $"Copied ($queries | length) ($editor) Luau queries to ($target)"
 }
