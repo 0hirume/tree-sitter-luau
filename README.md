@@ -41,13 +41,18 @@ mise run test
 mise run test:upstream
 mise run lint
 mise run format
-mise run copy:queries -- <helix-checkout>
+mise run copy:queries -- <editor> <query-directory>
 ```
 
 Edit `grammar.js` for grammar rules, `src/scanner.c` for external tokens, and `queries/` for editor
 queries. `mise run generate` refreshes the generated files under `src/`.
 
-`mise run copy:queries -- <helix-checkout>` copies the queries used by Helix into that checkout.
+`mise run copy:queries -- <editor> <query-directory>` copies an editor's query subset into the
+provided query directory. For example:
+
+```sh
+mise run copy:queries -- helix <helix-checkout>/runtime/queries/luau
+```
 
 Roblox type highlights are generated from the vendored snapshots in `spec/`. Normal development
 uses those snapshots and does not require either upstream checkout:

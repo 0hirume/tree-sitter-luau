@@ -59,7 +59,7 @@ run = [
 ]
 
 [tasks."copy:queries"]
-description = "Copy runtime queries into the provided Helix checkout"
+description = "Copy an editor query subset into a query directory"
 depends = ["queries:sync"]
 run = "nu scripts/copy-queries.nu"
 
