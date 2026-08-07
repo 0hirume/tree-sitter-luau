@@ -41,3 +41,19 @@ function Widget.new(): Widget
 --              ^^^ function.method
 --                     ^^^^^^ type
 end
+
+type Value = planck.SystemTable<jecs.World>
+--           ^^^^^^ namespace
+--                  ^^^^^^^^^^^ type
+--                              ^^^^ namespace
+--                                   ^^^^^ type
+
+local planck = require("planck")
+--    ^^^^^^ variable
+
+local jecs = require("jecs")
+--    ^^^^ variable
+
+world:component<<Widget>>()
+-- <- namespace
+--    ^^^^^^^^^ function.method
