@@ -3,8 +3,11 @@
 
 const answer: number = 42
 -- <- keyword.storage.modifier
---    ^ variable
+--    ^ constant
 --            ^ type.builtin
+
+local copy = answer
+--           ^^^^^^ constant
 
 declare extern type Widget with
 -- <- keyword.storage.modifier
@@ -32,3 +35,9 @@ declare utf8: {
   codes: (string) -> ((string, number) -> (number, number), string, number),
   -- <- variable.other.member
 }
+
+function Widget.new(): Widget
+--       ^^^^^^ namespace
+--              ^^^ function.method
+--                     ^^^^^^ type
+end

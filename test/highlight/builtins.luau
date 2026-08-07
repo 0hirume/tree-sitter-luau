@@ -3,6 +3,12 @@ local Players = game:GetService("Players")
 --                   ^ function.builtin
 --                              ^ string.special
 
+Players:GetPlayers()
+--      ^^^^^^^^^^ function.method
+
+consume(Players.PlayerAdded)
+--              ^^^^^^^^^^^ variable.other.member
+
 print(math.abs(1), math.pi)
 -- <- function.builtin
 --    ^ variable.builtin
@@ -69,7 +75,7 @@ end
 do
   const spawn = output
   consume(spawn)
-  --      ^^^^^ variable
+  --      ^^^^^ constant
   spawn()
-  -- <- variable
+  -- <- constant
 end

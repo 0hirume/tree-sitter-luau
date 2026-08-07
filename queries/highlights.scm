@@ -24,7 +24,8 @@
     "game" "math" "os"
     "plugin" "script"
     "table" "task" "utf8"
-    "workspace"))
+    "workspace")
+  (#is-not? local))
 
 [
   (line_comment)
@@ -179,11 +180,20 @@
   ] @constructor)
 
 (binding name: (identifier) @variable)
+(const_declaration
+  bindings: (binding_list
+    (binding name: (identifier) @constant)))
 (parameter name: (identifier) @variable.parameter)
 (declare_parameter name: (identifier) @variable.parameter)
 (function_type_parameter name: (identifier) @variable.parameter)
 
 (function_declaration name: (function_name name: (identifier) @function))
+(function_name
+  name: (identifier) @namespace
+  field: (identifier))
+(function_name
+  name: (identifier) @namespace
+  method: (identifier))
 (function_name field: (identifier) @function.method)
 (function_name method: (identifier) @function.method)
 (local_function_declaration name: (identifier) @function)
@@ -193,6 +203,7 @@
 (class_method name: (identifier) @function.method)
 
 (call_expression function: (identifier) @function)
+(method_call_expression receiver: (identifier) @namespace)
 (method_call_expression method: (identifier) @function.method)
 (type_instantiation_expression function: (identifier) @function)
 (type_instantiation_expression method: (identifier) @function.method)
@@ -406,7 +417,8 @@
     "arshift" "lrotate" "lshift" "replace"
     "rrotate" "rshift" "btest" "bxor"
     "band" "bnot" "bor" "countlz"
-    "countrz" "extract" "byteswap"))
+    "countrz" "extract" "byteswap")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -415,7 +427,8 @@
   (#any-of? @function.builtin
     "close" "create" "isyieldable"
     "resume" "running" "status"
-    "wrap" "yield"))
+    "wrap" "yield")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -424,7 +437,8 @@
   (#any-of? @function.builtin
     "info" "traceback" "profilebegin"
     "profileend" "resetmemorycategory" "setmemorycategory"
-    "dumpcodesize"))
+    "dumpcodesize")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -442,19 +456,22 @@
     "pow" "rad" "random"
     "randomseed" "round" "sign"
     "sin" "sinh" "sqrt"
-    "tan" "tanh"))
+    "tan" "tanh")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @constant.builtin)
   (#eq? @variable.builtin "math")
-  (#any-of? @constant.builtin "huge" "pi"))
+  (#any-of? @constant.builtin "huge" "pi")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @function.builtin)
   (#eq? @variable.builtin "os")
-  (#any-of? @function.builtin "clock" "date" "difftime" "time"))
+  (#any-of? @function.builtin "clock" "date" "difftime" "time")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -466,7 +483,8 @@
     "len" "lower" "match"
     "pack" "packsize" "rep"
     "reverse" "split" "sub"
-    "unpack" "upper"))
+    "unpack" "upper")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -478,7 +496,8 @@
     "find" "freeze" "getn"
     "insert" "isfrozen" "maxn"
     "move" "pack" "remove"
-    "sort" "unpack"))
+    "sort" "unpack")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -487,7 +506,8 @@
   (#any-of? @function.builtin
     "cancel" "defer" "delay"
     "synchronize" "desynchronize" "spawn"
-    "wait"))
+    "wait")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -496,13 +516,15 @@
   (#any-of? @function.builtin
     "char" "codepoint" "codes"
     "graphemes" "len" "offset"
-    "nfcnormalize" "nfdnormalize"))
+    "nfcnormalize" "nfdnormalize")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @constant.builtin)
   (#eq? @variable.builtin "utf8")
-  (#eq? @constant.builtin "charpattern"))
+  (#eq? @constant.builtin "charpattern")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -516,7 +538,8 @@
     "readf32" "readf64" "writei8"
     "writeu8" "writei16" "writeu16"
     "writei32" "writeu32" "writef32"
-    "writef64" "readstring" "writestring"))
+    "writef64" "readstring" "writestring")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -527,13 +550,15 @@
     "cross" "dot" "angle"
     "floor" "ceil" "abs"
     "sign" "clamp" "max"
-    "min"))
+    "min")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @constant.builtin)
   (#eq? @variable.builtin "vector")
-  (#any-of? @constant.builtin "zero" "one"))
+  (#any-of? @constant.builtin "zero" "one")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -542,7 +567,8 @@
   (#any-of? @function.builtin
     "singleton" "negationof" "unionof"
     "intersectionof" "newtable" "newfunction"
-    "copy" "generic" "optional"))
+    "copy" "generic" "optional")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
@@ -551,19 +577,22 @@
   (#any-of? @constant.builtin
     "any" "unknown" "never"
     "boolean" "buffer" "number"
-    "string" "thread"))
+    "string" "thread")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @function.builtin)
   (#eq? @variable.builtin "Content")
-  (#any-of? @function.builtin "fromUri" "fromAssetId" "fromObject"))
+  (#any-of? @function.builtin "fromUri" "fromAssetId" "fromObject")
+  (#is-not? local))
 
 ((field_expression
   table: (identifier) @variable.builtin
   field: (identifier) @constant.builtin)
   (#eq? @variable.builtin "Content")
-  (#eq? @constant.builtin "none"))
+  (#eq? @constant.builtin "none")
+  (#is-not? local))
 
 ((method_call_expression
   receiver: (identifier) @variable.builtin
@@ -574,7 +603,8 @@
       (string
         (quoted_string) @string.special))))
   (#eq? @variable.builtin "game")
-  (#eq? @function.builtin "GetService"))
+  (#eq? @function.builtin "GetService")
+  (#is-not? local))
 
 ((line_comment) @keyword.directive
   (#match? @keyword.directive "^--!(strict|nonstrict|nocheck|native|optimize [0-2])$"))
