@@ -41,13 +41,13 @@ mise run test
 mise run test:upstream
 mise run lint
 mise run format
-mise run copy:queries -- [helix-checkout]
+mise run queries:copy -- [helix-checkout]
 ```
 
 Edit `grammar.js` for grammar rules, `src/scanner.c` for external tokens, and `queries/` for editor
 queries. `mise run generate` refreshes the generated files under `src/`.
 
-`mise run copy:queries -- [helix-checkout]` copies the Helix query set into the checkout's
+`mise run queries:copy -- [helix-checkout]` copies the Helix query set into the checkout's
 `runtime/queries/luau` directory. Without a checkout argument, it uses the first available Helix
 runtime. For example:
 
