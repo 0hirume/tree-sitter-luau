@@ -13,7 +13,7 @@
     "spawn" "tick" "time"
     "tonumber" "tostring" "type"
     "typeof" "unpack" "UserSettings"
-    "version" "warn" "workspace"
+    "version" "warn"
     "xpcall")
   (#is-not? local))
 
@@ -80,6 +80,15 @@
   "do"
   "end"
 ] @keyword
+
+[
+  (function_declaration "end" @keyword.function)
+  (local_function_declaration "end" @keyword.function)
+  (const_function_declaration "end" @keyword.function)
+  (function_expression "end" @keyword.function)
+  (type_function_declaration "end" @keyword.function)
+  (class_method "end" @keyword.function)
+]
 
 "function" @keyword.function
 "type" @keyword.storage.type
@@ -180,6 +189,19 @@
   ] @constructor)
 
 (binding name: (identifier) @variable)
+((local_declaration
+  bindings: (binding_list
+    .
+    (binding name: (identifier) @namespace)
+    .)
+  values: (expression_list
+    .
+    (method_call_expression
+      receiver: (identifier) @variable.builtin
+      method: (identifier) @function.builtin)
+    .)
+  (#eq? @variable.builtin "game")
+  (#eq? @function.builtin "GetService")))
 (const_declaration
   bindings: (binding_list
     (binding name: (identifier) @constant)))
@@ -198,6 +220,7 @@
 (function_name method: (identifier) @function.method)
 (local_function_declaration name: (identifier) @function)
 (const_function_declaration name: (identifier) @function)
+(type_function_declaration name: (identifier) @type)
 (declare_function name: (identifier) @function)
 (extern_method name: (identifier) @function.method)
 (class_method name: (identifier) @function.method)
@@ -406,7 +429,7 @@
     "spawn" "tick" "time"
     "tonumber" "tostring" "type"
     "typeof" "unpack" "UserSettings"
-    "version" "warn" "workspace"
+    "version" "warn"
     "xpcall")
   (#is-not? local))
 

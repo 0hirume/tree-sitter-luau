@@ -57,3 +57,15 @@ local jecs = require("jecs")
 world:component<<Widget>>()
 -- <- namespace
 --    ^^^^^^^^^ function.method
+
+local Players = game:GetService("Players")
+--    ^^^^^^^ namespace
+--              ^^^^ variable.builtin
+--                   ^^^^^^^^^^ function.builtin
+
+type function TypeFactory(value: number): number
+-- <- keyword.storage.type
+--      ^^^^^^^^ keyword.function
+--               ^^^^^^^^^^^ type
+end
+-- <- keyword.function
