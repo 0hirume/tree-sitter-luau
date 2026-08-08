@@ -59,7 +59,7 @@ run = [
 ]
 
 [tasks."copy:queries"]
-description = "Copy an editor query subset into a query directory"
+description = "Copy Luau queries into a Helix runtime"
 depends = ["queries:sync"]
 run = "nu scripts/copy-queries.nu"
 
