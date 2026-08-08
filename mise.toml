@@ -58,10 +58,10 @@ run = [
   "clang-format -i src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
 ]
 
-[tasks."copy:queries"]
+[tasks."queries:copy"]
 description = "Copy Luau queries into a Helix runtime"
 depends = ["queries:sync"]
-run = "nu scripts/copy-queries.nu"
+run = "nu scripts/copy-helix-queries.nu"
 
 [tasks.check]
 description = "Run every project check"
