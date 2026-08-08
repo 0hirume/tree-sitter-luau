@@ -7,7 +7,12 @@
 
 (local_function_declaration name: (identifier) @name) @definition.function
 (const_function_declaration name: (identifier) @name) @definition.function
-(type_function_declaration name: (identifier) @name) @definition.function
+(type_function_declaration name: (identifier) @name) @definition.type
+(class_method name: (identifier) @name) @definition.method
+(declare_function name: (identifier) @name) @definition.function
+(declare_global name: (identifier) @name) @definition.variable
+(extern_type_declaration name: (identifier) @name) @definition.type
+(extern_method name: (identifier) @name) @definition.method
 (class_declaration name: (identifier) @name) @definition.class
 (type_alias_declaration name: (identifier) @name) @definition.type
 
