@@ -48,6 +48,14 @@ type Value = source.ValueHolder<data.Entry>
 --                              ^^^^ namespace
 --                                   ^^^^^ type
 
+type Flags = {
+  [string]: true,
+  --        ^^^^ constant.builtin.boolean
+}
+
+type Nothing = nil
+--             ^^^ constant.builtin
+
 local source = require("source")
 --    ^^^^^^ variable
 

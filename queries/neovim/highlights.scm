@@ -48,8 +48,14 @@
 
 (number) @constant.numeric
 (integer) @constant.numeric.integer
-(boolean) @constant.builtin.boolean
-(nil) @constant.builtin
+[
+  (boolean)
+  (boolean_type)
+] @constant.builtin.boolean
+[
+  (nil)
+  (nil_type)
+] @constant.builtin
 (vararg_expression) @constant
 
 (attribute name: (identifier) @attribute)
