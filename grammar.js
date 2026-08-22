@@ -89,7 +89,7 @@ export default grammar({
   externals: ($) => [$.block_comment, $.long_string],
 
   reserved: {
-    global: (_) => HARD_KEYWORDS,
+    global: () => HARD_KEYWORDS,
   },
 
   word: ($) => $._identifier,
@@ -328,9 +328,9 @@ export default grammar({
     return_statement: ($) =>
       prec.right(seq("return", optional(field("values", $.expression_list)))),
 
-    break_statement: (_) => "break",
+    break_statement: () => "break",
 
-    continue_statement: (_) => "continue",
+    continue_statement: () => "continue",
 
     expression_list: ($) => prec.right(commaSep1($._expression)),
 
@@ -480,15 +480,15 @@ export default grammar({
         field("value", $._expression),
       ),
 
-    vararg_expression: (_) => "...",
+    vararg_expression: () => "...",
 
-    nil: (_) => "nil",
+    nil: () => "nil",
 
-    boolean: (_) => choice("true", "false"),
+    boolean: () => choice("true", "false"),
 
-    integer: (_) => token(choice(/0[xX][0-9a-fA-F_]+i/, /0[bB][01_]+i/, /[0-9][0-9_]*i/)),
+    integer: () => token(choice(/0[xX][0-9a-fA-F_]+i/, /0[bB][01_]+i/, /[0-9][0-9_]*i/)),
 
-    number: (_) =>
+    number: () =>
       token(
         choice(
           /0[xX][0-9a-fA-F_]+(?:\.[0-9a-fA-F_]*)?(?:[pP][+-]?[0-9_]+)?/,
@@ -515,11 +515,11 @@ export default grammar({
         ),
       ),
 
-    _double_string_content: (_) => token.immediate(prec(1, /[^"\\\r\n]+/)),
+    _double_string_content: () => token.immediate(prec(1, /[^"\\\r\n]+/)),
 
-    _single_string_content: (_) => token.immediate(prec(1, /[^'\\\r\n]+/)),
+    _single_string_content: () => token.immediate(prec(1, /[^'\\\r\n]+/)),
 
-    interpolation_content: (_) => token.immediate(prec(1, /[^`{\\\r\n]+/)),
+    interpolation_content: () => token.immediate(prec(1, /[^`{\\\r\n]+/)),
 
     escape_sequence: ($) =>
       choice(
@@ -538,13 +538,13 @@ export default grammar({
         token.immediate("}"),
       ),
 
-    decimal_escape: (_) => token.immediate(/\\[0-9]{1,3}/),
+    decimal_escape: () => token.immediate(/\\[0-9]{1,3}/),
 
-    hex_escape: (_) => token.immediate(/\\x[0-9a-fA-F]{2}/),
+    hex_escape: () => token.immediate(/\\x[0-9a-fA-F]{2}/),
 
-    whitespace_escape: (_) => token.immediate(prec(2, seq("\\z", repeat(/[ \t\v\f\r\n]/)))),
+    whitespace_escape: () => token.immediate(prec(2, seq("\\z", repeat(/[ \t\v\f\r\n]/)))),
 
-    simple_escape: (_) => token.immediate(choice(/\\[^\r\n]/, /\\\r?\n/)),
+    simple_escape: () => token.immediate(choice(/\\[^\r\n]/, /\\\r?\n/)),
 
     interpolated_string: ($) =>
       seq(
@@ -623,9 +623,9 @@ export default grammar({
 
     _type_argument: ($) => choice($._type, $._type_pack),
 
-    nil_type: (_) => "nil",
+    nil_type: () => "nil",
 
-    boolean_type: (_) => choice("true", "false"),
+    boolean_type: () => choice("true", "false"),
 
     string_type: ($) => $._string_literal,
 
@@ -714,7 +714,7 @@ export default grammar({
         field("value", $._type),
       ),
 
-    access_qualifier: (_) => choice("read", "write"),
+    access_qualifier: () => choice("read", "write"),
 
     union_type: ($) =>
       prec.left(PREC.TYPE_UNION, seq(field("left", $._type), "|", field("right", $._type))),
@@ -834,9 +834,9 @@ export default grammar({
 
     identifier: ($) => choice($._identifier, ...CONTEXTUAL_KEYWORDS),
 
-    _identifier: (_) => /[A-Za-z_][A-Za-z0-9_]*/,
+    _identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
 
-    line_comment: (_) => token(seq("--", /[^\r\n]*/)),
+    line_comment: () => token(seq("--", /[^\r\n]*/)),
 
     _comment: ($) => choice($.line_comment, $.block_comment),
   },
