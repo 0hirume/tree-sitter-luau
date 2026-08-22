@@ -56,6 +56,15 @@ type Flags = {
 type Nothing = nil
 --             ^^^ constant.builtin
 
+type Accessors = {
+  read read: () -> (),
+  -- <- keyword.storage.modifier
+  --   ^^^^ variable.other.member
+  write write: () -> (),
+  -- <- keyword.storage.modifier
+  --    ^^^^^ variable.other.member
+}
+
 local source = require("source")
 --    ^^^^^^ variable
 

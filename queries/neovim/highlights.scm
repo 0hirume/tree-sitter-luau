@@ -106,6 +106,8 @@
   "not"
 ] @keyword.operator
 
+(access_qualifier) @keyword.storage.modifier
+
 [
   "local"
   "const"
@@ -115,8 +117,6 @@
   "public"
   "extends"
   "with"
-  "read"
-  "write"
   "export"
 ] @keyword.storage.modifier
 
