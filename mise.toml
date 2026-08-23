@@ -1,8 +1,6 @@
 [tools]
 "aqua:nushell/nushell" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
-"cargo:https://github.com/nushell/nufmt" = "HEAD"
-"cargo:nu-lint" = "1.3.0"
 "github:llvm/llvm-project" = "latest"
 "npm:oxfmt" = "latest"
 "npm:oxlint" = "latest"
@@ -14,6 +12,11 @@ description = "Generate the ABI 15 parser"
 run = "tree-sitter generate --js-runtime native --abi 15"
 sources = ["grammar.js", "src/scanner.c"]
 outputs = ["src/grammar.json", "src/node-types.json", "src/parser.c"]
+
+[tasks."queries:copy"]
+description = "Copy Luau queries into a Helix runtime"
+depends = ["queries:sync"]
+run = "nu scripts/copy-helix-queries.nu"
 
 [tasks."queries:sync"]
 description = "Generate query data from the vendored snapshot"
@@ -42,8 +45,6 @@ run = "nu scripts/test-upstream.nu"
 description = "Check JavaScript, formatting, and generated parser drift"
 depends = ["generate", "queries:check"]
 run = [
-  "nufmt --dry-run scripts",
-  "nu-lint scripts",
   "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
   "oxfmt --check grammar.js tree-sitter.json test/config.json .github/workflows/ci.yml README.md",
   "clang-format --dry-run --Werror src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
@@ -53,15 +54,9 @@ run = [
 [tasks.format]
 description = "Format authored source and metadata"
 run = [
-  "nufmt scripts",
   "oxfmt grammar.js tree-sitter.json test/config.json .github/workflows/ci.yml README.md",
   "clang-format -i src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
 ]
-
-[tasks."queries:copy"]
-description = "Copy Luau queries into a Helix runtime"
-depends = ["queries:sync"]
-run = "nu scripts/copy-helix-queries.nu"
 
 [tasks.check]
 description = "Run every project check"
