@@ -18,17 +18,17 @@ def helix-runtime-target []: nothing -> string {
     } else {
         "~/.config/helix/runtime" | path expand
     }
-    let source_runtime: path = if ($env.CARGO_MANIFEST_DIR? | is-not-empty) {
+    let source_runtime = if ($env.CARGO_MANIFEST_DIR? | is-not-empty) {
         $env.CARGO_MANIFEST_DIR | path dirname | path join runtime
     } else {
         null
     }
-    let executable_runtime: path = (
+    let executable_runtime = (
         which hx
         | get --optional path.0
         | if $in == null { null } else { $in | path dirname | path join runtime }
     )
-    let candidates: list<path> = [
+    let candidates = [
         $source_runtime
         $config_runtime
         ($env.HELIX_RUNTIME? | default null)

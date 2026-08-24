@@ -9,6 +9,12 @@ const answer: number = 42
 local copy = answer
 --           ^^^^^^ constant
 
+local with = copy
+--    ^^^^ variable
+
+local query = model:with()
+--                  ^^^^ function.method
+
 declare extern type Widget with
 -- <- keyword.storage.modifier
 --      ^ keyword.storage.modifier

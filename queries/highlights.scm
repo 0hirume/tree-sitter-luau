@@ -97,7 +97,11 @@
 ]
 
 "function" @keyword.function
-"type" @keyword.storage.type
+"local" @keyword.storage.modifier
+
+(type_alias_declaration "type" @keyword.storage.type)
+(type_function_declaration "type" @keyword.storage.type)
+(extern_type_declaration "type" @keyword.storage.type)
 
 [
   "in"
@@ -106,21 +110,28 @@
   "not"
 ] @keyword.operator
 
+(typeof_type "typeof" @keyword.operator)
+
 (access_qualifier) @keyword.storage.modifier
-
-[
-  "local"
-  "const"
-  "class"
-  "declare"
-  "extern"
-  "public"
-  "extends"
-  "with"
-  "export"
-] @keyword.storage.modifier
-
-"typeof" @keyword.operator
+(const_declaration "const" @keyword.storage.modifier)
+(const_function_declaration "const" @keyword.storage.modifier)
+(class_declaration "class" @keyword.storage.modifier)
+(declare_global "declare" @keyword.storage.modifier)
+(declare_function "declare" @keyword.storage.modifier)
+(extern_type_declaration
+  "declare" @keyword.storage.modifier
+  "extern" @keyword.storage.modifier)
+(class_property "public" @keyword.storage.modifier)
+(class_method "public" @keyword.storage.modifier)
+(class_declaration "extends" @keyword.storage.modifier)
+(extern_type_declaration "extends" @keyword.storage.modifier)
+(extern_type_declaration "with" @keyword.storage.modifier)
+(local_declaration "export" @keyword.storage.modifier)
+(const_declaration "export" @keyword.storage.modifier)
+(function_declaration "export" @keyword.storage.modifier)
+(class_declaration "export" @keyword.storage.modifier)
+(type_alias_declaration "export" @keyword.storage.modifier)
+(type_function_declaration "export" @keyword.storage.modifier)
 
 [
   "+"
@@ -234,13 +245,16 @@
 (call_expression function: (identifier) @function)
 (method_call_expression receiver: (identifier) @namespace)
 (method_call_expression method: (identifier) @function.method)
+(method_call_expression method: (identifier _ @function.method))
 (type_instantiation_expression function: (identifier) @function)
 (type_instantiation_expression receiver: (identifier) @namespace)
 (type_instantiation_expression method: (identifier) @function.method)
 
 (field_expression table: (identifier) @namespace)
 (field_expression field: (identifier) @variable.other.member)
+(field_expression field: (identifier _ @variable.other.member))
 (table_field key: (identifier) @variable.other.member)
+(table_field key: (identifier _ @variable.other.member))
 (table_field
   key: (identifier) @function.method
   value: (function_expression))
