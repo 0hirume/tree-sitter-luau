@@ -73,6 +73,51 @@ declare function pack<T...>(...: T...): T...
     (type_reference
       (identifier))))
 
+========================================
+Declaration function returning a function
+========================================
+
+export type PackedCallback = (...any) -> (...any)
+declare function forward<A..., R...>(value: (A...) -> R...): (A...) -> R...
+
+---
+
+(source_file
+  (type_alias_declaration
+    (identifier)
+    (function_type
+      (function_type_parameters
+        (variadic_type_pack
+          (type_reference
+            (identifier))))
+      (type_pack
+        (type_list
+          (variadic_type_pack
+            (type_reference
+              (identifier)))))))
+  (declare_function
+    (identifier)
+    (generic_parameter_list
+      (generic_type_pack
+        (identifier))
+      (generic_type_pack
+        (identifier)))
+    (declare_parameter_list
+      (declare_parameter
+        (identifier)
+        (function_type
+          (function_type_parameters
+            (generic_type_pack
+              (identifier)))
+          (generic_type_pack
+            (identifier)))))
+    (function_type
+      (function_type_parameters
+        (generic_type_pack
+          (identifier)))
+      (generic_type_pack
+        (identifier)))))
+
 ==================
 External type
 ==================

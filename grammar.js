@@ -104,6 +104,7 @@ export default grammar({
     [$._expression, $._prefix_expression],
     [$.function_type_parameter, $.parenthesized_type],
     [$.function_type_parameter, $.type_list],
+    [$._packed_function_type_parameters, $.function_type_parameters, $.type_list],
     [$.parenthesized_type, $.function_type_parameter, $.type_list],
     [$.string_type, $.property_type],
     [$.string_type, $.extern_property],
@@ -641,6 +642,15 @@ export default grammar({
         field("return_type", $._return_type),
       ),
 
+    _packed_function_type_parameters: ($) => prec(2, seq("(", $._variadic_type_pack, ")")),
+
+    _packed_function_type: ($) =>
+      seq(
+        field("parameters", alias($._packed_function_type_parameters, $.function_type_parameters)),
+        "->",
+        field("return_type", $._return_type),
+      ),
+
     attributed_function_type: ($) =>
       seq(field("attributes", $.attributes), field("type", $.function_type)),
 
@@ -661,7 +671,8 @@ export default grammar({
     function_type_parameter: ($) =>
       seq(optional(seq(field("name", $.identifier), ":")), field("type", $._type)),
 
-    _return_type: ($) => choice($._type, $._type_pack),
+    _return_type: ($) =>
+      choice(alias($._packed_function_type, $.function_type), $._type, $._type_pack),
 
     _type_pack: ($) => choice($.type_pack, $.variadic_type_pack, $.generic_type_pack),
 
