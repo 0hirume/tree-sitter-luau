@@ -44,6 +44,7 @@
   table: (identifier) @_context
   field: (identifier) @_context)
 (table_field key: (identifier) @_context)
+(property_type name: (identifier) @_context)
 (type_reference module: (identifier) @_context)
 (type_reference name: (identifier) @_context)
 (class_reference module: (identifier) @_context)
