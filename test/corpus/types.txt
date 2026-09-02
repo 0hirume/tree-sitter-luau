@@ -118,25 +118,26 @@ end
 (source_file
   (type_function_declaration
     (identifier)
-    (parameter_list
-      (parameter
-        (identifier)))
-    (block
-      (if_statement
-        (binary_expression
-          (identifier)
-          (field_expression
+    (function_body
+      (parameter_list
+        (parameter
+          (identifier)))
+      (block
+        (if_statement
+          (binary_expression
             (identifier)
-            (identifier)))
-        (block
-          (return_statement
-            (expression_list
-              (field_expression
-                (identifier)
-                (identifier))))))
-      (return_statement
-        (expression_list
-          (identifier))))))
+            (field_expression
+              (identifier)
+              (identifier)))
+          (block
+            (return_statement
+              (expression_list
+                (field_expression
+                  (identifier)
+                  (identifier))))))
+        (return_statement
+          (expression_list
+            (identifier)))))))
 
 ===============================
 Parenthesized variadic type pack

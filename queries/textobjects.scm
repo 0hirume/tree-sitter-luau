@@ -9,14 +9,7 @@
   (type_function_declaration)
 ] @function.around
 
-[
-  (function_declaration body: (block) @function.inside)
-  (local_function_declaration body: (block) @function.inside)
-  (const_function_declaration body: (block) @function.inside)
-  (function_expression body: (block) @function.inside)
-  (type_function_declaration body: (block) @function.inside)
-  (class_method body: (block) @function.inside)
-]
+(function_body body: (block) @function.inside)
 
 [
   (parameter)

@@ -92,3 +92,9 @@ type function TypeFactory(value: number): number
 --               ^^^^^^^^^^^ type
 end
 -- <- keyword.function
+
+const function operation(): ()
+end
+
+local callback = operation
+--               ^ function

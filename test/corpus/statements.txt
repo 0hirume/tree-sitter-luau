@@ -95,49 +95,51 @@ end
 (source_file
   (local_function_declaration
     (identifier)
-    (generic_parameter_list
-      (generic_type
-        (identifier)))
-    (parameter_list
-      (parameter
-        (identifier)
-        (type_reference
-          (identifier))))
-    (type_reference
-      (identifier))
-    (block
-      (return_statement
-        (expression_list
-          (identifier)))))
+    (function_body
+      (generic_parameter_list
+        (generic_type
+          (identifier)))
+      (parameter_list
+        (parameter
+          (identifier)
+          (type_reference
+            (identifier))))
+      (type_reference
+        (identifier))
+      (block
+        (return_statement
+          (expression_list
+            (identifier))))))
   (function_declaration
     (function_name
       (identifier)
       (identifier))
-    (parameter_list
-      (parameter
-        (identifier)
-        (type_reference
-          (identifier))))
-    (type_reference
-      (identifier))
-    (block
-      (local_declaration
-        (binding_list
-          (binding
+    (function_body
+      (parameter_list
+        (parameter
+          (identifier)
+          (type_reference
+            (identifier))))
+      (type_reference
+        (identifier))
+      (block
+        (local_declaration
+          (binding_list
+            (binding
+              (identifier)))
+          (expression_list
+            (call_expression
+              (identifier)
+              (arguments
+                (expression_list
+                  (identifier))))))
+        (assignment_statement
+          (assignment_target_list
+            (field_expression
+              (identifier)
+              (identifier)))
+          (expression_list
             (identifier)))
-        (expression_list
-          (call_expression
-            (identifier)
-            (arguments
-              (expression_list
-                (identifier))))))
-      (assignment_statement
-        (assignment_target_list
-          (field_expression
-            (identifier)
-            (identifier)))
-        (expression_list
-          (identifier)))
-      (return_statement
-        (expression_list
-          (identifier))))))
+        (return_statement
+          (expression_list
+            (identifier)))))))

@@ -87,14 +87,7 @@
   "end"
 ] @keyword
 
-[
-  (function_declaration "end" @keyword.function)
-  (local_function_declaration "end" @keyword.function)
-  (const_function_declaration "end" @keyword.function)
-  (function_expression "end" @keyword.function)
-  (type_function_declaration "end" @keyword.function)
-  (class_method "end" @keyword.function)
-]
+(function_body "end" @keyword.function)
 
 "function" @keyword.function
 "local" @keyword.storage.modifier

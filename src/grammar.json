@@ -477,7 +477,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },
@@ -518,7 +518,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },
@@ -559,7 +559,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },
@@ -779,7 +779,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },
@@ -841,7 +841,7 @@
         }
       ]
     },
-    "_function_body": {
+    "function_body": {
       "type": "SEQ",
       "members": [
         {
@@ -1670,7 +1670,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },
@@ -3267,7 +3267,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_function_body"
+          "name": "function_body"
         }
       ]
     },

@@ -2,11 +2,7 @@
 
 [
   (block)
-  (function_declaration)
-  (local_function_declaration)
-  (const_function_declaration)
-  (function_expression)
-  (type_function_declaration)
+  (function_body)
 ] @local.scope
 
 (binding name: (identifier) @local.definition @local.definition.variable)

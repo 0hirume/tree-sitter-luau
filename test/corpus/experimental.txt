@@ -37,23 +37,24 @@ export()
         (identifier)))
     (function_name
       (identifier))
-    (parameter_list
-      (parameter
-        (identifier)
-        (type_reference
-          (identifier)))
-      (parameter
-        (identifier)
-        (type_reference
-          (identifier))))
-    (type_reference
-      (identifier))
-    (block
-      (return_statement
-        (expression_list
-          (binary_expression
-            (identifier)
-            (identifier))))))
+    (function_body
+      (parameter_list
+        (parameter
+          (identifier)
+          (type_reference
+            (identifier)))
+        (parameter
+          (identifier)
+          (type_reference
+            (identifier))))
+      (type_reference
+        (identifier))
+      (block
+        (return_statement
+          (expression_list
+            (binary_expression
+              (identifier)
+              (identifier)))))))
   (assignment_statement
     (assignment_target_list
       (identifier))
@@ -132,53 +133,55 @@ local point = Point { x = 1, y = 2 }
         (identifier)))
     (class_method
       (identifier)
-      (parameter_list
-        (parameter
-          (identifier)))
-      (type_reference
-        (identifier))
-      (block
-        (return_statement
-          (expression_list
-            (call_expression
-              (field_expression
-                (identifier)
-                (identifier))
-              (arguments
-                (expression_list
-                  (binary_expression
+      (function_body
+        (parameter_list
+          (parameter
+            (identifier)))
+        (type_reference
+          (identifier))
+        (block
+          (return_statement
+            (expression_list
+              (call_expression
+                (field_expression
+                  (identifier)
+                  (identifier))
+                (arguments
+                  (expression_list
                     (binary_expression
-                      (field_expression
-                        (identifier)
-                        (identifier))
-                      (field_expression
-                        (identifier)
-                        (identifier)))
-                    (binary_expression
-                      (field_expression
-                        (identifier)
-                        (identifier))
-                      (field_expression
-                        (identifier)
-                        (identifier)))))))))))
+                      (binary_expression
+                        (field_expression
+                          (identifier)
+                          (identifier))
+                        (field_expression
+                          (identifier)
+                          (identifier)))
+                      (binary_expression
+                        (field_expression
+                          (identifier)
+                          (identifier))
+                        (field_expression
+                          (identifier)
+                          (identifier))))))))))))
     (class_method
       (identifier)
-      (parameter_list)
-      (type_reference
-        (identifier))
-      (block
-        (return_statement
-          (expression_list
-            (call_expression
-              (identifier)
-              (arguments
-                (table_constructor
-                  (table_field
-                    (identifier)
-                    (number))
-                  (table_field
-                    (identifier)
-                    (number))))))))))
+      (function_body
+        (parameter_list)
+        (type_reference
+          (identifier))
+        (block
+          (return_statement
+            (expression_list
+              (call_expression
+                (identifier)
+                (arguments
+                  (table_constructor
+                    (table_field
+                      (identifier)
+                      (number))
+                    (table_field
+                      (identifier)
+                      (number)))))))))))
   (class_declaration
     (identifier)
     (class_reference
@@ -218,13 +221,14 @@ class { name = "value" }
         (identifier)))
     (expression_list
       (function_expression
-        (parameter_list
-          (parameter
-            (identifier)))
-        (block
-          (return_statement
-            (expression_list
-              (identifier)))))))
+        (function_body
+          (parameter_list
+            (parameter
+              (identifier)))
+          (block
+            (return_statement
+              (expression_list
+                (identifier))))))))
   (expression_statement
     (call_expression
       (identifier)

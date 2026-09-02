@@ -185,7 +185,7 @@ export default grammar({
         optional("export"),
         "function",
         field("name", $.function_name),
-        $._function_body,
+        $.function_body,
       ),
 
     local_function_declaration: ($) =>
@@ -194,7 +194,7 @@ export default grammar({
         "local",
         "function",
         field("name", $.identifier),
-        $._function_body,
+        $.function_body,
       ),
 
     const_function_declaration: ($) =>
@@ -203,7 +203,7 @@ export default grammar({
         "const",
         "function",
         field("name", $.identifier),
-        $._function_body,
+        $.function_body,
       ),
 
     class_declaration: ($) =>
@@ -229,7 +229,7 @@ export default grammar({
       seq("public", field("name", $.identifier), optional(seq(":", field("type", $._type)))),
 
     class_method: ($) =>
-      seq(optional("public"), "function", field("name", $.identifier), $._function_body),
+      seq(optional("public"), "function", field("name", $.identifier), $.function_body),
 
     function_name: ($) =>
       seq(
@@ -238,7 +238,7 @@ export default grammar({
         optional(seq(":", field("method", $.identifier))),
       ),
 
-    _function_body: ($) =>
+    function_body: ($) =>
       seq(
         optional(field("generics", $.generic_parameter_list)),
         field("parameters", $.parameter_list),
@@ -361,7 +361,7 @@ export default grammar({
     parenthesized_expression: ($) => seq("(", $._expression, ")"),
 
     function_expression: ($) =>
-      seq(optional(field("attributes", $.attributes)), "function", $._function_body),
+      seq(optional(field("attributes", $.attributes)), "function", $.function_body),
 
     if_expression: ($) =>
       prec.right(
@@ -571,7 +571,7 @@ export default grammar({
       ),
 
     type_function_declaration: ($) =>
-      seq(optional("export"), "type", "function", field("name", $.identifier), $._function_body),
+      seq(optional("export"), "type", "function", field("name", $.identifier), $.function_body),
 
     generic_definition_list: ($) =>
       seq(

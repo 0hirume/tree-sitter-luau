@@ -44,20 +44,21 @@ end
       (attribute
         (identifier)))
     (identifier)
-    (generic_parameter_list
-      (generic_type
-        (identifier)))
-    (parameter_list
-      (parameter
-        (identifier)
-        (type_reference
-          (identifier))))
-    (type_reference
-      (identifier))
-    (block
-      (return_statement
-        (expression_list
-          (identifier))))))
+    (function_body
+      (generic_parameter_list
+        (generic_type
+          (identifier)))
+      (parameter_list
+        (parameter
+          (identifier)
+          (type_reference
+            (identifier))))
+      (type_reference
+        (identifier))
+      (block
+        (return_statement
+          (expression_list
+            (identifier)))))))
 
 ==================
 Const remains contextual
@@ -75,13 +76,14 @@ const { value = 42 }
         (identifier)))
     (expression_list
       (function_expression
-        (parameter_list
-          (parameter
-            (identifier)))
-        (block
-          (return_statement
-            (expression_list
-              (identifier)))))))
+        (function_body
+          (parameter_list
+            (parameter
+              (identifier)))
+          (block
+            (return_statement
+              (expression_list
+                (identifier))))))))
   (expression_statement
     (call_expression
       (identifier)
