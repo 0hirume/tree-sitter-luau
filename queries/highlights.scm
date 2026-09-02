@@ -233,7 +233,16 @@
 (extern_method name: (identifier) @function.method)
 (class_method name: (identifier) @function.method)
 
-(call_expression function: (identifier) @function)
+(call_expression
+  function: (identifier) @function
+  .
+  [
+    (line_comment)
+    (block_comment)
+  ]*
+  .
+  arguments: (arguments) @_arguments
+  (#not-eq? @_arguments ""))
 (method_call_expression method: (identifier) @function.method)
 (method_call_expression method: (identifier _ @function.method))
 (type_instantiation_expression function: (identifier) @function)
@@ -248,7 +257,15 @@
   value: (function_expression))
 (call_expression
   function: (field_expression
-    field: (identifier) @function))
+    field: (identifier) @function)
+  .
+  [
+    (line_comment)
+    (block_comment)
+  ]*
+  .
+  arguments: (arguments) @_arguments
+  (#not-eq? @_arguments ""))
 (type_instantiation_expression
   function: (field_expression
     field: (identifier) @function))

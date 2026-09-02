@@ -120,3 +120,15 @@ end
 
 local callback = operation
 --               ^ function
+
+local function recover_call_highlight(value: boolean)
+  value
+  -- <- variable
+  consume(value)
+end
+
+local function recover_field_call_highlight()
+  local charm = {}
+  charm.flags
+  --    ^^^^^ variable.other.member
+end
