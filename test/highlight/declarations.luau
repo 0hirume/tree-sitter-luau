@@ -6,6 +6,23 @@ const answer: number = 42
 --    ^ constant
 --            ^ type.builtin
 
+const object = {}
+--    ^^^^^^ constant
+
+object.field = true
+-- <- constant
+
+object:update()
+-- <- constant
+
+object:update<<string>>()
+-- <- constant
+
+function object.reset(): ()
+--       ^^^^^^ constant
+--              ^^^^^ function.method
+end
+
 local copy = answer
 --           ^^^^^^ constant
 

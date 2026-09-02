@@ -30,24 +30,14 @@
 
 (call_expression function: (identifier) @_context)
 (type_instantiation_expression function: (identifier) @_context)
-(method_call_expression
-  receiver: (identifier) @_context
-  method: (identifier) @_context)
-(type_instantiation_expression
-  receiver: (identifier) @_context
-  method: (identifier) @_context)
-(field_expression
-  table: (identifier) @_context
-  field: (identifier) @_context)
+(method_call_expression method: (identifier) @_context)
+(type_instantiation_expression method: (identifier) @_context)
+(field_expression field: (identifier) @_context)
 (table_field key: (identifier) @_context)
 (property_type name: (identifier) @_context)
 (type_reference module: (identifier) @_context)
 (type_reference name: (identifier) @_context)
 (class_reference module: (identifier) @_context)
 (type_alias_declaration name: (identifier) @_context)
-(function_name
-  name: (identifier) @_context
-  field: (identifier) @_context)
-(function_name
-  name: (identifier) @_context
-  method: (identifier) @_context)
+(function_name field: (identifier) @_context)
+(function_name method: (identifier) @_context)
