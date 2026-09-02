@@ -13,7 +13,12 @@ local with = copy
 --    ^^^^ variable
 
 local query = model:with()
+--            ^^^^^ variable
 --                  ^^^^ function.method
+
+model.field = true
+-- <- variable
+--    ^^^^^ variable.other.member
 
 declare extern type Widget with
 -- <- keyword.storage.modifier
@@ -43,7 +48,7 @@ declare utf8: {
 }
 
 function Widget.new(): Widget
---       ^^^^^^ namespace
+--       ^^^^^^ variable
 --              ^^^ function.method
 --                     ^^^^^^ type
 end
@@ -78,7 +83,7 @@ local data = require("data")
 --    ^^^^ variable
 
 model:transform<<Record>>()
--- <- namespace
+-- <- variable
 --    ^^^^^^^^^ function.method
 
 local Players = game:GetService("Players")

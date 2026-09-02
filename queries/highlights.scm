@@ -219,13 +219,11 @@
 (declare_parameter name: (identifier) @variable.parameter)
 (function_type_parameter name: (identifier) @variable.parameter)
 
-(function_declaration name: (function_name name: (identifier) @function))
-(function_name
-  name: (identifier) @namespace
-  field: (identifier))
-(function_name
-  name: (identifier) @namespace
-  method: (identifier))
+(function_declaration
+  name: (function_name
+    .
+    name: (identifier) @function
+    .))
 (function_name field: (identifier) @function.method)
 (function_name method: (identifier) @function.method)
 (local_function_declaration name: (identifier) @function)
@@ -236,14 +234,11 @@
 (class_method name: (identifier) @function.method)
 
 (call_expression function: (identifier) @function)
-(method_call_expression receiver: (identifier) @namespace)
 (method_call_expression method: (identifier) @function.method)
 (method_call_expression method: (identifier _ @function.method))
 (type_instantiation_expression function: (identifier) @function)
-(type_instantiation_expression receiver: (identifier) @namespace)
 (type_instantiation_expression method: (identifier) @function.method)
 
-(field_expression table: (identifier) @namespace)
 (field_expression field: (identifier) @variable.other.member)
 (field_expression field: (identifier _ @variable.other.member))
 (table_field key: (identifier) @variable.other.member)
@@ -253,11 +248,9 @@
   value: (function_expression))
 (call_expression
   function: (field_expression
-    table: (identifier) @namespace
     field: (identifier) @function))
 (type_instantiation_expression
   function: (field_expression
-    table: (identifier) @namespace
     field: (identifier) @function))
 (property_type name: (identifier) @variable.other.member)
 (extern_property name: (identifier) @variable.other.member)

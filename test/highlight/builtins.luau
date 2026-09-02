@@ -22,7 +22,7 @@ local frozen = table.freeze({})
 --                          ^ constructor
 
 module.start()
--- <- namespace
+-- <- variable
 --     ^ function
 
 local handlers = {
