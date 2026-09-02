@@ -9,8 +9,11 @@ def spec-path []: nothing -> string {
     $ROOT | path join spec roblox-types.json
 }
 
-def query-path []: nothing -> string {
-    $ROOT | path join queries highlights.scm
+def query-targets []: nothing -> list<record<path: string, local_aware: bool>> {
+    [
+        { path: ($ROOT | path join queries highlights.scm), local_aware: true }
+        { path: ($ROOT | path join queries neovim highlights.scm), local_aware: false }
+    ]
 }
 
 def fail [msg: string]: nothing -> error {
@@ -33,10 +36,10 @@ def git-value [repository: path, ...arguments: string]: nothing -> string {
     $result.stdout | str trim
 }
 
-def render-types [...types: string]: nothing -> string {
+def render-names [...names: string]: nothing -> list<string> {
     let quote: string = char dq
-    let rows: list<string> = (
-    $types
+
+    $names
     | uniq
     | sort
     | chunks 5
@@ -44,7 +47,10 @@ def render-types [...types: string]: nothing -> string {
         let values: string = $row | each {|name| $"($quote)($name)($quote)" } | str join " "
         $"    ($values)"
       }
-  )
+}
+
+def render-types [...types: string]: nothing -> string {
+    let rows: list<string> = render-names ...$types
 
     [
         "((type_reference name: (identifier) @type.builtin)"
@@ -54,54 +60,84 @@ def render-types [...types: string]: nothing -> string {
     ] | str join (char newline)
 }
 
-def generated-query []: nothing -> string {
+def render-value-types [local_aware: bool, ...types: string]: nothing -> string {
+    let rows: list<string> = render-names ...$types
+    let end: list<string> = if $local_aware {
+        ["  (#is-not? local))"]
+    } else {
+        [")"]
+    }
+
+    [
+        "(["
+        "  (field_expression table: (identifier) @type.builtin)"
+        "  (method_call_expression receiver: (identifier) @type.builtin)"
+        "  (type_instantiation_expression receiver: (identifier) @type.builtin)"
+        "]"
+        "  (#any-of? @type.builtin"
+        ...$rows
+        "  )"
+        ...$end
+    ] | str join (char newline)
+}
+
+def generated-query [local_aware: bool]: nothing -> string {
     let spec: record = try {
         open (spec-path)
     } catch {|error| fail $"Failed to read the Roblox type snapshot: ($error.msg)" }
     let types: list<string> = $spec.types | each {|name| $name | into string }
-    let body: string = render-types ...$types
+    let value_types: list<string> = $spec.value_types | each {|name| $name | into string }
+    let body: string = [
+        (render-types ...$types)
+        (render-value-types $local_aware ...$value_types)
+    ] | str join "\n\n"
+
     $"; Source: Roblox/creator-docs ($spec.source.revision) (($spec.source.date))\n($body)"
 }
 
-def expected-query []: nothing -> string {
+def expected-query [path: path, local_aware: bool]: nothing -> string {
     let actual: string = try {
-        open --raw (query-path)
+        open --raw $path
     } catch {|error| fail $"Failed to read the highlight query: ($error.msg)" }
     let start: list<string> = $actual | split row $START
 
     if ($start | length) != 2 {
-        fail $"expected exactly one generated start marker in (query-path)"
+        fail $"expected exactly one generated start marker in ($path)"
     }
 
     let end: list<string> = $start.1? | split row $END
 
     if ($end | length) != 2 {
-        fail $"expected exactly one generated end marker in (query-path)"
+        fail $"expected exactly one generated end marker in ($path)"
     }
 
-    $"($start.0?)($START)\n(generated-query)\n($END)($end.1?)"
+    $"($start.0?)($START)\n(generated-query $local_aware)\n($END)($end.1?)"
 }
 
 def sync []: nothing -> nothing {
-    try {
-        expected-query | save --force (query-path)
-    } catch {|error| fail $"Failed to write the highlight query: ($error.msg)" }
+    for target in (query-targets) {
+        try {
+            expected-query $target.path $target.local_aware | save --force $target.path
+        } catch {|error| fail $"Failed to write the highlight query at ($target.path): ($error.msg)" }
+
+        print $"Generated ($target.path)"
+    }
 }
 
 def "main sync" []: nothing -> nothing {
     sync
-    print $"Generated (query-path)"
 }
 
 def "main check" []: nothing -> nothing {
-    let path: string = query-path
-    let actual: string = try {
-        open --raw $path
-    } catch {|error| fail $"Failed to read the highlight query: ($error.msg)" }
-    let expected: string = expected-query
+    for target in (query-targets) {
+        let actual: string = try {
+            open --raw $target.path
+        } catch {|error| fail $"Failed to read the highlight query at ($target.path): ($error.msg)" }
+        let expected: string = expected-query $target.path $target.local_aware
 
-    if $actual != $expected {
-        fail $"generated output is stale: ($path); run `nu scripts/queries.nu sync`"
+        if $actual != $expected {
+            fail $"generated output is stale: ($target.path); run `nu scripts/queries.nu sync`"
+        }
     }
 
     print "Generated queries are current"
@@ -122,13 +158,33 @@ def "main update" [
         fail $"Creator Docs datatype directory does not exist: ($datatype_dir)"
     }
 
-    let paths: list<path> = (
-    (glob $"($class_dir | str replace --all (char --unicode 5c) /)/*.yaml")
-    | append (glob $"($datatype_dir | str replace --all (char --unicode 5c) /)/*.yaml")
-  )
+    let class_paths: list<path> = glob $"($class_dir | str replace --all (char --unicode 5c) /)/*.yaml"
+    let datatype_paths: list<path> = glob $"($datatype_dir | str replace --all (char --unicode 5c) /)/*.yaml"
     let types: list<string> = (
-    $paths
+    $class_paths
+    | append $datatype_paths
     | each {|path| $path | path parse | get stem }
+    | where $it =~ '^[A-Za-z_][A-Za-z0-9_]*$'
+    | uniq
+    | sort
+  )
+    let value_types: list<string> = (
+    $datatype_paths
+    | each {|path|
+        let document: record = try {
+            open $path
+        } catch {|error| fail $"Failed to read Roblox datatype metadata from ($path): ($error.msg)" }
+        let constructors: list = $document.constructors? | default []
+        let constants: list = $document.constants? | default []
+        let functions: list = $document.functions? | default []
+
+        if (($constructors | is-not-empty) or ($constants | is-not-empty) or ($functions | is-not-empty)) {
+            $document.name | into string
+        }
+      }
+    | compact
+    # Creator Docs names the global Enum container `Enums`.
+    | append "Enum"
     | where $it =~ '^[A-Za-z_][A-Za-z0-9_]*$'
     | uniq
     | sort
@@ -146,6 +202,7 @@ def "main update" [
             directories: [$CLASSES $DATATYPES]
         }
         types: $types
+        value_types: $value_types
     }
 
     let directory: path = $ROOT | path join spec

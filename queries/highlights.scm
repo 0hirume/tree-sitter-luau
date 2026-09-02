@@ -420,6 +420,23 @@
     "WireframeHandleAdornment" "Workspace" "WorkspaceAnnotation" "WorldModel" "WorldRoot"
     "WrapDeformer" "WrapLayer" "WrapTarget" "WrapTextureTransfer"
   ))
+
+([
+  (field_expression table: (identifier) @type.builtin)
+  (method_call_expression receiver: (identifier) @type.builtin)
+  (type_instantiation_expression receiver: (identifier) @type.builtin)
+]
+  (#any-of? @type.builtin
+    "Axes" "BrickColor" "CFrame" "Color3" "ColorSequence"
+    "ColorSequenceKeypoint" "Content" "DateTime" "DockWidgetPluginGuiInfo" "Enum"
+    "Faces" "FloatCurveKey" "Font" "Instance" "NumberRange"
+    "NumberSequence" "NumberSequenceKeypoint" "OverlapParams" "Path2DControlPoint" "PathWaypoint"
+    "PhysicalProperties" "Random" "Ray" "RaycastParams" "Rect"
+    "Region3" "Region3int16" "RotationCurveKey" "SecurityCapabilities" "SharedTable"
+    "TweenInfo" "UDim" "UDim2" "User" "ValueCurveKey"
+    "Vector2" "Vector2int16" "Vector3" "Vector3int16"
+  )
+  (#is-not? local))
 ; @end generated Roblox types
 
 ((call_expression function: (identifier) @function.builtin)
@@ -611,16 +628,16 @@
   (#is-not? local))
 
 ((field_expression
-  table: (identifier) @variable.builtin
+  table: (identifier) @type.builtin
   field: (identifier) @function.builtin)
-  (#eq? @variable.builtin "Content")
+  (#eq? @type.builtin "Content")
   (#any-of? @function.builtin "fromUri" "fromAssetId" "fromObject")
   (#is-not? local))
 
 ((field_expression
-  table: (identifier) @variable.builtin
+  table: (identifier) @type.builtin
   field: (identifier) @constant.builtin)
-  (#eq? @variable.builtin "Content")
+  (#eq? @type.builtin "Content")
   (#eq? @constant.builtin "none")
   (#is-not? local))
 

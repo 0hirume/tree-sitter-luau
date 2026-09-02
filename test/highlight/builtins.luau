@@ -32,6 +32,15 @@ local handlers = {
 
 local part: Part = Instance.new("Part")
 --          ^^^^ type.builtin
+--                 ^^^^^^^^ type.builtin
+--                          ^^^ function
+
+local size = UDim2.fromOffset(0, 0)
+--           ^^^^^ type.builtin
+--                 ^^^^^^^^^^ function
+
+local key = Enum.KeyCode.F4
+--          ^^^^ type.builtin
 
 local annotation: WorkspaceAnnotation? = nil
 --                ^^^^^^^^^^^^^^^^^^^ type.builtin
@@ -49,7 +58,7 @@ local reflectedAny = types.any
 --                         ^ constant.builtin
 
 local noContent = Content.none
---                ^ variable.builtin
+--                ^ type.builtin
 --                        ^ constant.builtin
 
 local output = print
@@ -78,4 +87,10 @@ do
   --      ^^^^^ constant
   spawn()
   -- <- constant
+end
+
+do
+  local UDim2 = {}
+  UDim2.fromOffset(0, 0)
+  -- <- variable
 end
