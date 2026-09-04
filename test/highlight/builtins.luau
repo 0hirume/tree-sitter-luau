@@ -21,6 +21,10 @@ local frozen = table.freeze({})
 --                   ^ function.builtin
 --                          ^ constructor
 
+local format = print
+local formatted = string.format("%s", format)
+--                ^^^^^^ variable.builtin
+
 module.start()
 -- <- variable
 --     ^ function

@@ -22,7 +22,7 @@
     "_G" "_VERSION" "bit32"
     "coroutine" "debug"
     "game" "math" "os"
-    "plugin" "script"
+    "plugin" "script" "string"
     "table" "task" "utf8"
     "workspace")
   (#is-not? local))
