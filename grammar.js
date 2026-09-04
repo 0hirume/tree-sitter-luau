@@ -54,6 +54,7 @@ const CONTEXTUAL_KEYWORDS = [
   "export",
   "extends",
   "extern",
+  "open",
   "public",
   "read",
   "type",
@@ -209,6 +210,7 @@ export default grammar({
     class_declaration: ($) =>
       seq(
         optional("export"),
+        optional("open"),
         "class",
         field("name", $.identifier),
         optional(seq("extends", field("superclass", $.class_reference))),
@@ -283,20 +285,32 @@ export default grammar({
     if_statement: ($) =>
       seq(
         "if",
-        field("condition", $._expression),
-        "then",
-        optional(field("consequence", $.block)),
+        choice(
+          seq(field("condition", $._expression), "then", optional(field("consequence", $.block))),
+          $.if_local_clause,
+        ),
         repeat(field("alternative", $.elseif_clause)),
         optional(field("alternative", $.else_clause)),
         "end",
       ),
 
-    elseif_clause: ($) =>
+    if_local_clause: ($) =>
       seq(
-        "elseif",
+        choice("local", "const"),
+        field("binding", $.binding),
+        "=",
         field("condition", $._expression),
         "then",
         optional(field("consequence", $.block)),
+      ),
+
+    elseif_clause: ($) =>
+      seq(
+        "elseif",
+        choice(
+          seq(field("condition", $._expression), "then", optional(field("consequence", $.block))),
+          $.if_local_clause,
+        ),
       ),
 
     else_clause: ($) => seq("else", optional(field("body", $.block))),

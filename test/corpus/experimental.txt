@@ -239,3 +239,113 @@ class { name = "value" }
             (string
               (quoted_string
                 (string_content)))))))))
+
+==================
+Open classes
+==================
+
+open class Base
+  public value: number
+end
+
+export open class Derived extends Base
+end
+
+---
+
+(source_file
+  (class_declaration
+    (identifier)
+    (class_property
+      (identifier)
+      (type_reference
+        (identifier))))
+  (class_declaration
+    (identifier)
+    (class_reference
+      (identifier))))
+
+==================
+Open remains contextual
+==================
+
+local open = function(value) return value end
+open { name = "value" }
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (function_expression
+        (function_body
+          (parameter_list
+            (parameter
+              (identifier)))
+          (block
+            (return_statement
+              (expression_list
+                (identifier))))))))
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (table_constructor
+          (table_field
+            (identifier)
+            (string
+              (quoted_string
+                (string_content)))))))))
+
+==================
+If-local conditions
+==================
+
+if local item: string = source then
+  consume(item)
+elseif const fallback = source then
+  consume(fallback)
+else
+  consume(source)
+end
+
+---
+
+(source_file
+  (if_statement
+    (if_local_clause
+      (binding
+        (identifier)
+        (type_reference
+          (identifier)))
+      (identifier)
+      (block
+        (expression_statement
+          (call_expression
+            (identifier)
+            (arguments
+              (expression_list
+                (identifier)))))))
+    (elseif_clause
+      (if_local_clause
+        (binding
+          (identifier))
+        (identifier)
+        (block
+          (expression_statement
+            (call_expression
+              (identifier)
+              (arguments
+                (expression_list
+                  (identifier))))))))
+    (else_clause
+      (block
+        (expression_statement
+          (call_expression
+            (identifier)
+            (arguments
+              (expression_list
+                (identifier)))))))))

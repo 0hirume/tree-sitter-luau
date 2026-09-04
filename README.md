@@ -4,8 +4,8 @@ A [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for
 [Luau](https://luau.org/).
 
 It supports typed Luau, interpolated and long strings, attributes, explicit type arguments, `const`
-declarations, type functions, declaration files, exported values, integer literals, and
-user-defined classes.
+declarations, type functions, declaration files, exported values, integer literals,
+user-defined classes including open classes, and if-local and if-const conditions.
 
 Queries are included for highlighting, locals, indentation, folding, text objects, and injections.
 

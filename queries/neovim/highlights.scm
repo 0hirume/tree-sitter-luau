@@ -108,7 +108,13 @@
 (access_qualifier) @keyword.storage.modifier
 (const_declaration "const" @keyword.storage.modifier)
 (const_function_declaration "const" @keyword.storage.modifier)
+(class_declaration "open" @keyword.storage.modifier)
 (class_declaration "class" @keyword.storage.modifier)
+(if_local_clause
+  [
+    "local"
+    "const"
+  ] @keyword.storage.modifier)
 (declare_global "declare" @keyword.storage.modifier)
 (declare_function "declare" @keyword.storage.modifier)
 (extern_type_declaration
@@ -215,6 +221,9 @@
 (const_declaration
   bindings: (binding_list
     (binding name: (identifier) @constant)))
+(if_local_clause
+  "const"
+  binding: (binding name: (identifier) @constant))
 (parameter name: (identifier) @variable.parameter)
 (declare_parameter name: (identifier) @variable.parameter)
 (function_type_parameter name: (identifier) @variable.parameter)

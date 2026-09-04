@@ -3,6 +3,7 @@
 [
   (block)
   (function_body)
+  (if_local_clause)
 ] @local.scope
 
 (binding name: (identifier) @local.definition @local.definition.variable)
@@ -19,6 +20,9 @@
 (const_declaration
   bindings: (binding_list
     (binding name: (identifier) @local.definition @local.definition.constant)))
+(if_local_clause
+  "const"
+  binding: (binding name: (identifier) @local.definition @local.definition.constant))
 (parameter name: (identifier) @local.definition @local.definition.variable.parameter)
 (declare_parameter name: (identifier) @local.definition @local.definition.variable.parameter)
 
