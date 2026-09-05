@@ -11,8 +11,14 @@ def spec-path []: nothing -> string {
 
 def query-targets []: nothing -> list<record<path: string, local_aware: bool>> {
     [
-        { path: ($ROOT | path join queries highlights.scm), local_aware: true }
-        { path: ($ROOT | path join queries neovim highlights.scm), local_aware: false }
+        {
+            path: ($ROOT | path join queries highlights.scm)
+            local_aware: true
+        }
+        {
+            path: ($ROOT | path join queries neovim highlights.scm)
+            local_aware: false
+        }
     ]
 }
 
@@ -119,13 +125,12 @@ def sync []: nothing -> nothing {
         try {
             expected-query $target.path $target.local_aware | save --force $target.path
         } catch {|error| fail $"Failed to write the highlight query at ($target.path): ($error.msg)" }
-
-        print $"Generated ($target.path)"
     }
 }
 
 def "main sync" []: nothing -> nothing {
     sync
+    print "Generated queries"
 }
 
 def "main check" []: nothing -> nothing {
@@ -184,7 +189,7 @@ def "main update" [
       }
     | compact
     # Creator Docs names the global Enum container `Enums`.
-    | append "Enum"
+    | append Enum
     | where $it =~ '^[A-Za-z_][A-Za-z0-9_]*$'
     | uniq
     | sort
