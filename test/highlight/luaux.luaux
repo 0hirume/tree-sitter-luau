@@ -1,0 +1,21 @@
+local widgets = {}
+local title = "Greeting"
+
+local component = <Frame Visible />
+--                 ^^^^^ tag
+--                       ^^^^^^^ attribute
+
+local nested = <widgets.Card Name="Panel" />
+--              ^^^^^^^ variable
+--                      ^^^^ tag
+--                           ^^^^ attribute
+
+local label = <TextLabel>Hello {title}</TextLabel>
+--             ^^^^^^^^^ tag
+--                       ^^^^^ string
+--                              ^^^^^ variable
+--                                      ^^^^^^^^^ tag
+
+local note = <Frame><!-- note --></Frame>
+--            ^^^^^ tag
+--                  ^^^^^^^^^^^^^ comment

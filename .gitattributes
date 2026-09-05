@@ -4,3 +4,7 @@ src/grammar.json linguist-generated
 src/node-types.json linguist-generated
 src/parser.c linguist-generated
 src/tree_sitter/* linguist-generated
+luaux/src/grammar.json linguist-generated
+luaux/src/node-types.json linguist-generated
+luaux/src/parser.c linguist-generated
+luaux/src/tree_sitter/* linguist-generated

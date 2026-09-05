@@ -6,11 +6,24 @@
       "camelcase": "Luau",
       "scope": "source.luau",
       "path": ".",
+      "external-files": ["common/scanner.h"],
       "file-types": ["luau"],
       "highlights": "queries/highlights.scm",
       "injections": "queries/injections.scm",
       "locals": "queries/locals.scm",
       "injection-regex": "^luau$"
+    },
+    {
+      "name": "luaux",
+      "camelcase": "LuauX",
+      "scope": "source.luaux",
+      "path": "luaux",
+      "external-files": ["common/scanner.h"],
+      "file-types": ["luaux"],
+      "highlights": ["queries/highlights.scm", "luaux/queries/highlights.scm"],
+      "injections": ["queries/injections.scm", "luaux/queries/injections.scm"],
+      "locals": ["queries/locals.scm", "luaux/queries/locals.scm"],
+      "injection-regex": "^luaux$"
     }
   ],
   "metadata": {

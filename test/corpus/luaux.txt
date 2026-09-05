@@ -1,0 +1,159 @@
+==================
+Markup expressions
+:language(luaux)
+==================
+
+local first = <Frame />
+local second = <widgets.Card />
+local third = <><TextLabel />hello</>
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (self_closing_element
+        (element_name
+          (identifier)))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (self_closing_element
+        (element_name
+          (identifier)
+          (identifier)))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (fragment
+        (self_closing_element
+          (element_name
+            (identifier)))
+        (markup_text)))))
+
+==================
+Markup attributes
+:language(luaux)
+==================
+
+local view = <Frame Name = "a" Size={UDim2.new(1, 0)} Visible {props} ={props.AnchorPoint} />
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (self_closing_element
+        (element_name
+          (identifier))
+        (markup_attribute
+          (identifier)
+          (quoted_string
+            (string_content)))
+        (markup_attribute
+          (identifier)
+          (expression_hole
+            (call_expression
+              (field_expression
+                (identifier)
+                (identifier))
+              (arguments
+                (expression_list
+                  (number)
+                  (number))))))
+        (markup_attribute
+          (identifier))
+        (spread_attribute
+          (identifier))
+        (inferred_attribute
+          (expression_hole
+            (field_expression
+              (identifier)
+              (identifier))))))))
+
+==================
+Markup children
+:language(luaux)
+==================
+
+local view = <Frame>
+  <TextLabel>Name: {name}</TextLabel>
+  <!-- note -->
+  {--[[ detail ]]}
+  {child}
+</Frame>
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (element
+        (opening_element
+          (element_name
+            (identifier)))
+        (element
+          (opening_element
+            (element_name
+              (identifier)))
+          (markup_text)
+          (expression_hole
+            (identifier))
+          (closing_element
+            (element_name
+              (identifier))))
+        (markup_comment)
+        (comment_hole
+          (block_comment))
+        (expression_hole
+          (identifier))
+        (closing_element
+          (element_name
+            (identifier)))))))
+
+==================
+Plain Luau expressions
+:language(luaux)
+==================
+
+local comparison = left < right
+local value = identity<<number>>(1)
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (binary_expression
+        (identifier)
+        (identifier))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (identifier)
+        (explicit_type_arguments
+          (type_argument_list
+            (type_reference
+              (identifier))))
+        (arguments
+          (expression_list
+            (number)))))))
