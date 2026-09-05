@@ -1,11 +1,15 @@
 [tools]
 "aqua:nushell/nushell" = "latest"
+"aqua:rhysd/actionlint" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
 "github:llvm/llvm-project" = "latest"
+"github:zizmorcore/zizmor" = "latest"
+"npm:@actions/languageserver" = "latest"
 "npm:oxfmt" = "latest"
 "npm:oxlint" = "latest"
 "npm:typescript" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
+"npm:yaml-language-server" = "latest"
 
 [tasks.generate]
 description = "Generate the ABI 15 parsers"
@@ -63,11 +67,13 @@ depends = ["generate"]
 run = "nu scripts/test-luaux-upstream.nu"
 
 [tasks.lint]
-description = "Check JavaScript, formatting, and generated parser drift"
+description = "Check source, workflows, formatting, and generated parser drift"
 depends = ["generate", "queries:check"]
 run = [
   "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js luaux/grammar.js",
-  "oxfmt --check grammar.js luaux/grammar.js tree-sitter.json test/config.json .github/workflows/ci.yml README.md",
+  "actionlint",
+  "zizmor --offline --pedantic .github",
+  "oxfmt --check grammar.js luaux/grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
   "clang-format --dry-run --Werror common/scanner.h src/scanner.c luaux/src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h bindings/c/tree_sitter/tree-sitter-luaux.h",
   "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter luaux/src/grammar.json luaux/src/node-types.json luaux/src/parser.c luaux/src/tree_sitter",
 ]
@@ -75,7 +81,7 @@ run = [
 [tasks.format]
 description = "Format authored source and metadata"
 run = [
-  "oxfmt grammar.js luaux/grammar.js tree-sitter.json test/config.json .github/workflows/ci.yml README.md",
+  "oxfmt grammar.js luaux/grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
   "clang-format -i common/scanner.h src/scanner.c luaux/src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h bindings/c/tree_sitter/tree-sitter-luaux.h",
 ]
 
