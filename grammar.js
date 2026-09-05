@@ -82,7 +82,7 @@ const BINARY_OPERATORS = [
   ["^", PREC.POWER, "right"],
 ];
 
-export default grammar({
+module.exports = grammar({
   name: "luau",
 
   extras: ($) => [/[ \t\v\f\r\n]/, $._comment],

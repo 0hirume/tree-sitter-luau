@@ -123,7 +123,7 @@ local callback = operation
 
 local function recover_call_highlight(value: boolean)
   value
-  -- <- variable
+  -- <- variable.parameter
   consume(value)
 end
 

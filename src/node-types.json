@@ -1128,7 +1128,7 @@
     "fields": {
       "condition": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "_expression",
@@ -1146,6 +1146,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "if_local_clause",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1969,19 +1979,15 @@
     }
   },
   {
-    "type": "if_statement",
+    "type": "if_local_clause",
     "named": true,
     "fields": {
-      "alternative": {
-        "multiple": true,
-        "required": false,
+      "binding": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
-            "type": "else_clause",
-            "named": true
-          },
-          {
-            "type": "elseif_clause",
+            "type": "binding",
             "named": true
           }
         ]
@@ -2006,6 +2012,56 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "if_statement",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "else_clause",
+            "named": true
+          },
+          {
+            "type": "elseif_clause",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "if_local_clause",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3527,6 +3583,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "open",
+    "named": false
   },
   {
     "type": "or",
