@@ -1,3 +1,6 @@
 [submodule "test/upstream/luau"]
 	path = test/upstream/luau
 	url = https://github.com/luau-lang/luau.git
+[submodule "test/upstream/luaux"]
+	path = test/upstream/luaux
+	url = https://github.com/luau-xml/luaux.git
