@@ -1,4 +1,5 @@
 [tools]
+"aqua:Kitware/CMake" = "latest"
 "aqua:nushell/nushell" = "latest"
 "aqua:rhysd/actionlint" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
