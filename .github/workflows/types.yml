@@ -10,32 +10,27 @@ permissions: {}
 concurrency:
   group: ${{ github.workflow }}
 
-env:
-  DOCS_REPOSITORY: Roblox/creator-docs
-
 jobs:
   update:
     name: update
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      BASE_BRANCH: ${{ github.event.repository.default_branch }}
-      GH_REPO: ${{ github.repository }}
-      GH_TOKEN: ${{ github.token }}
     permissions:
       contents: write # push the generated update branch.
       pull-requests: write # create the review pull request.
     steps:
-      - name: checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: install nushell
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
-          cache: false
           install_args: aqua:nushell/nushell
 
       - name: update types
+        env:
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: nu .github/types.nu
