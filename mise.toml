@@ -1,72 +1,11 @@
 [tools]
 "aqua:Kitware/CMake" = "latest"
 "aqua:nushell/nushell" = "latest"
-"aqua:rhysd/actionlint" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
 "github:0hirume/breathers" = "latest"
 "github:llvm/llvm-project" = "latest"
-"github:zizmorcore/zizmor" = "latest"
-"npm:@actions/languageserver" = "latest"
 "npm:oxfmt" = "latest"
 "npm:oxlint" = "latest"
 "npm:typescript" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
 "npm:yaml-language-server" = "latest"
-
-[tasks.generate]
-description = "Generate the ABI 15 Luau parser"
-run = "tree-sitter generate --js-runtime native --abi 15"
-sources = ["grammar.js", "common/scanner.h", "src/scanner.c"]
-outputs = ["src/grammar.json", "src/node-types.json", "src/parser.c"]
-
-[tasks."queries:copy"]
-description = "Copy Luau queries into a Helix runtime"
-depends = ["queries:sync"]
-run = "nu scripts/copy-helix-queries.nu"
-
-[tasks."queries:sync"]
-description = "Generate query data from the vendored snapshot"
-run = "nu scripts/queries.nu sync"
-
-[tasks."queries:check"]
-description = "Check generated query data for drift"
-run = "nu scripts/queries.nu check"
-
-[tasks."queries:update"]
-description = "Import Roblox types from a Creator Docs checkout"
-run = "nu scripts/queries.nu update"
-
-[tasks.test]
-description = "Run the parser corpus and query tests"
-depends = ["generate"]
-env = { CC = "clang" }
-run = "tree-sitter test"
-
-[tasks."test:upstream"]
-description = "Parse the pinned upstream Luau source corpus"
-depends = ["generate"]
-run = "nu scripts/test-upstream.nu"
-
-[tasks.lint]
-description = "Check source, native analysis, workflows, formatting, and generated parser drift"
-depends = ["generate", "queries:check"]
-run = [
-  "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
-  "actionlint",
-  "zizmor --offline --pedantic .github",
-  "oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
-  "clang-format --dry-run --Werror common/scanner.h src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
-  "clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11 -Isrc",
-  "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter",
-]
-
-[tasks.format]
-description = "Format authored source and metadata"
-run = [
-  "oxfmt grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
-  "clang-format -i common/scanner.h src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
-]
-
-[tasks.check]
-description = "Run every project check"
-depends = ["lint", "test", "test:upstream"]

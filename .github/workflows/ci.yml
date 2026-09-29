@@ -27,14 +27,24 @@ jobs:
       - name: install tools
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
-      - name: check
-        run: mise run check
+      - name: parse
+        env:
+          CC: clang
+        run: |
+          tree-sitter generate --js-runtime native --abi 15
+          tree-sitter test
+          nu scripts/test-upstream.nu
+          nu scripts/queries.nu check
+          git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter
 
-      - name: configure cmake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
+      - name: check source
+        run: |
+          oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js
+          oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml README.md
+          clang-format --dry-run --Werror src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h
+          clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11
 
-      - name: build with cmake
-        run: cmake --build build --config Release
-
-      - name: build with make
-        run: make CC=clang
+      - name: build
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
+          cmake --build build --config Release

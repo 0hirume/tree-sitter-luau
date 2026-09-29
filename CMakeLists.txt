@@ -9,45 +9,18 @@ project(tree-sitter-luau
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(TREE_SITTER_REUSE_ALLOCATOR "Reuse the library allocator" OFF)
 
-set(TREE_SITTER_ABI_VERSION 15 CACHE STRING "Tree-sitter ABI version")
-if(NOT ${TREE_SITTER_ABI_VERSION} MATCHES "^[0-9]+$")
-    unset(TREE_SITTER_ABI_VERSION CACHE)
-    message(FATAL_ERROR "TREE_SITTER_ABI_VERSION must be an integer")
-endif()
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c" TREE_SITTER_LANGUAGE_VERSION
+     REGEX "^#define LANGUAGE_VERSION [0-9]+$")
+string(REGEX REPLACE "^#define LANGUAGE_VERSION " "" TREE_SITTER_LANGUAGE_VERSION
+       "${TREE_SITTER_LANGUAGE_VERSION}")
 
 include(GNUInstallDirs)
 
-find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
-
-set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
-
-add_custom_command(OUTPUT "${SOURCE_DIRECTORY}/grammar.json"
-                          "${SOURCE_DIRECTORY}/node-types.json"
-                   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/grammar.js"
-                   COMMAND "${TREE_SITTER_CLI}" generate
-                           "${CMAKE_CURRENT_SOURCE_DIR}/grammar.js"
-                           --output "${SOURCE_DIRECTORY}" --no-parser
-                           --js-runtime=native
-                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                   COMMENT "Generating luau grammar metadata")
-
-add_custom_command(OUTPUT "${SOURCE_DIRECTORY}/parser.c"
-                   BYPRODUCTS "${SOURCE_DIRECTORY}/tree_sitter/parser.h"
-                              "${SOURCE_DIRECTORY}/tree_sitter/alloc.h"
-                              "${SOURCE_DIRECTORY}/tree_sitter/array.h"
-                   DEPENDS "${SOURCE_DIRECTORY}/grammar.json"
-                   COMMAND "${TREE_SITTER_CLI}" generate
-                           "${SOURCE_DIRECTORY}/grammar.json"
-                           --output "${SOURCE_DIRECTORY}"
-                           --abi=${TREE_SITTER_ABI_VERSION} --js-runtime=native
-                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                   COMMENT "Generating luau parser")
-
 add_library(tree-sitter-luau
-            "${SOURCE_DIRECTORY}/parser.c"
-            "${SOURCE_DIRECTORY}/scanner.c")
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c"
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/scanner.c")
 target_include_directories(tree-sitter-luau
-                           PRIVATE "${SOURCE_DIRECTORY}"
+                           PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
                            INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/bindings/c>
                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
@@ -59,7 +32,7 @@ set_target_properties(tree-sitter-luau
                       PROPERTIES
                       C_STANDARD 11
                       POSITION_INDEPENDENT_CODE ON
-                      SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
+                      SOVERSION "${TREE_SITTER_LANGUAGE_VERSION}.${PROJECT_VERSION_MAJOR}"
                       DEFINE_SYMBOL "")
 
 configure_file("bindings/c/tree-sitter-luau.pc.in"
@@ -77,7 +50,3 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bindings/c/tree_sitter"
 file(GLOB LUAU_QUERIES queries/*.scm)
 install(FILES ${LUAU_QUERIES}
         DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries/luau")
-
-add_custom_target(ts-test "${TREE_SITTER_CLI}" test
-                  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                  COMMENT "tree-sitter test")

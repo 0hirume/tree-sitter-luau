@@ -15,3 +15,4 @@ target/
 *.wasm
 
 mise.lock
+mise.local.toml

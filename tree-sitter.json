@@ -6,7 +6,6 @@
       "camelcase": "Luau",
       "scope": "source.luau",
       "path": ".",
-      "external-files": ["common/scanner.h"],
       "file-types": ["luau"],
       "highlights": "queries/highlights.scm",
       "injections": "queries/injections.scm",
