@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "https://github.com/Roblox/creator-docs",
-    "revision": "467a5711f1639c854540d624efbf2fca80c0f3d2",
-    "date": "2026-09-09",
+    "revision": "cc850a83d75d8ad7ff638c2733fd3a1a7a0bdd91",
+    "date": "2026-09-25",
     "directories": [
       "content/en-us/reference/engine/classes",
       "content/en-us/reference/engine/datatypes"
@@ -297,6 +297,7 @@
     "Instance",
     "InstanceAdornment",
     "InstanceFileSyncService",
+    "InstanceHandle",
     "IntConstrainedValue",
     "IntValue",
     "IntersectOperation",
@@ -697,6 +698,7 @@
     "FloatCurveKey",
     "Font",
     "Instance",
+    "InstanceHandle",
     "NumberRange",
     "NumberSequence",
     "NumberSequenceKeypoint",
