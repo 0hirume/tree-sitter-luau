@@ -6,15 +6,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <wctype.h>
 
 enum TokenType {
   BLOCK_COMMENT,
   LONG_STRING,
-#ifdef TREE_SITTER_LUAUX
-  MARKUP_TEXT,
-  MARKUP_COMMENT_TEXT,
-#endif
 };
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -74,83 +69,7 @@ static bool scan_long_bracket(TSLexer *lexer, bool comment) {
   return true;
 }
 
-#ifdef TREE_SITTER_LUAUX
-static bool scan_markup_text(TSLexer *lexer) {
-  bool has_content = false;
-  bool has_newline = false;
-  bool has_non_whitespace = false;
-
-  while (!lexer->eof(lexer) && lexer->lookahead != '<' && lexer->lookahead != '{') {
-    has_content = true;
-    has_newline |= lexer->lookahead == '\n';
-    has_non_whitespace |= !iswspace((wint_t)lexer->lookahead);
-
-    if (lexer->lookahead != '\\') {
-      advance(lexer);
-      continue;
-    }
-
-    advance(lexer);
-    if (lexer->eof(lexer) || lexer->lookahead == '<') {
-      continue;
-    }
-
-    has_newline |= lexer->lookahead == '\n';
-    has_non_whitespace |= !iswspace((wint_t)lexer->lookahead);
-    advance(lexer);
-  }
-
-  if (has_content) {
-    lexer->mark_end(lexer);
-  }
-
-  return has_content && (!has_newline || has_non_whitespace);
-}
-
-static bool scan_markup_comment_text(TSLexer *lexer) {
-  bool has_content = false;
-
-  while (!lexer->eof(lexer)) {
-    lexer->mark_end(lexer);
-
-    if (lexer->lookahead != '-') {
-      has_content = true;
-      advance(lexer);
-      continue;
-    }
-
-    advance(lexer);
-    if (lexer->lookahead != '-') {
-      has_content = true;
-      continue;
-    }
-
-    advance(lexer);
-    if (lexer->lookahead == '>') {
-      return has_content;
-    }
-
-    has_content = true;
-  }
-
-  lexer->mark_end(lexer);
-  return has_content;
-}
-#endif
-
 static bool external_scanner_scan(TSLexer *lexer, const bool *valid_symbols) {
-#ifdef TREE_SITTER_LUAUX
-  if (valid_symbols[MARKUP_COMMENT_TEXT]) {
-    lexer->result_symbol = MARKUP_COMMENT_TEXT;
-    return scan_markup_comment_text(lexer);
-  }
-
-  if (valid_symbols[MARKUP_TEXT]) {
-    lexer->result_symbol = MARKUP_TEXT;
-    return scan_markup_text(lexer);
-  }
-#endif
-
   while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' ||
          lexer->lookahead == '\f' || lexer->lookahead == '\r' || lexer->lookahead == '\n') {
     skip(lexer);

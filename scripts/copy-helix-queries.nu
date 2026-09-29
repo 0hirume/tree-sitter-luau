@@ -63,17 +63,8 @@ def main [
     } else {
         helix-runtime
     }
-    let query_root: path = $runtime | path join queries
-    let languages: list<record<name: string, source: path>> = [
-        {
-            name: luau
-            source: ($ROOT | path join queries helix)
-        }
-        {
-            name: luaux
-            source: ($ROOT | path join luaux queries)
-        }
-    ]
+    let source: path = $ROOT | path join queries helix
+    let target: path = $runtime | path join queries luau
     let queries: list<string> = [
         highlights.scm
         indents.scm
@@ -84,24 +75,21 @@ def main [
         textobjects.scm
     ]
 
-    for language in $languages {
-        if not ($language.source | path exists) {
-            fail $"Editor query subset does not exist: ($language.source)"
-        }
-
-        let target: path = $query_root | path join $language.name
-        if not ($target | path exists) {
-            try {
-                mkdir $target
-            } catch {|error| fail $"Failed to create ($target): ($error.msg)" }
-        }
-
-        for query: string in $queries {
-            try {
-                cp ($language.source | path join $query) ($target | path join $query)
-            } catch {|error| fail $"Failed to copy ($query): ($error.msg)" }
-        }
+    if not ($source | path exists) {
+        fail $"Editor query subset does not exist: ($source)"
     }
 
-    print $"Copied Helix queries for ($languages | get name | str join ', ') to ($query_root)"
+    if not ($target | path exists) {
+        try {
+            mkdir $target
+        } catch {|error| fail $"Failed to create ($target): ($error.msg)" }
+    }
+
+    for query: string in $queries {
+        try {
+            cp ($source | path join $query) ($target | path join $query)
+        } catch {|error| fail $"Failed to copy ($query): ($error.msg)" }
+    }
+
+    print $"Copied Helix queries for luau to ($target)"
 }

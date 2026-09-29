@@ -13,29 +13,13 @@
 "npm:yaml-language-server" = "latest"
 
 [tasks.generate]
-description = "Generate the ABI 15 parsers"
-run = [
-  "tree-sitter generate --js-runtime native --abi 15",
-  "tree-sitter generate --js-runtime native --abi 15 --output luaux/src luaux/grammar.js",
-]
-sources = [
-  "grammar.js",
-  "luaux/grammar.js",
-  "common/scanner.h",
-  "src/scanner.c",
-  "luaux/src/scanner.c",
-]
-outputs = [
-  "src/grammar.json",
-  "src/node-types.json",
-  "src/parser.c",
-  "luaux/src/grammar.json",
-  "luaux/src/node-types.json",
-  "luaux/src/parser.c",
-]
+description = "Generate the ABI 15 Luau parser"
+run = "tree-sitter generate --js-runtime native --abi 15"
+sources = ["grammar.js", "common/scanner.h", "src/scanner.c"]
+outputs = ["src/grammar.json", "src/node-types.json", "src/parser.c"]
 
 [tasks."queries:copy"]
-description = "Copy Luau and LuauX queries into a Helix runtime"
+description = "Copy Luau queries into a Helix runtime"
 depends = ["queries:sync"]
 run = "nu scripts/copy-helix-queries.nu"
 
@@ -62,30 +46,25 @@ description = "Parse the pinned upstream Luau source corpus"
 depends = ["generate"]
 run = "nu scripts/test-upstream.nu"
 
-[tasks."test:upstream:luaux"]
-description = "Parse upstream LuauX sources and verify the LuauX superset"
-depends = ["generate"]
-run = "nu scripts/test-luaux-upstream.nu"
-
 [tasks.lint]
 description = "Check source, workflows, formatting, and generated parser drift"
 depends = ["generate", "queries:check"]
 run = [
-  "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js luaux/grammar.js",
+  "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
   "actionlint",
   "zizmor --offline --pedantic .github",
-  "oxfmt --check grammar.js luaux/grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
-  "clang-format --dry-run --Werror common/scanner.h src/scanner.c luaux/src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h bindings/c/tree_sitter/tree-sitter-luaux.h",
-  "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter luaux/src/grammar.json luaux/src/node-types.json luaux/src/parser.c luaux/src/tree_sitter",
+  "oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
+  "clang-format --dry-run --Werror common/scanner.h src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
+  "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter",
 ]
 
 [tasks.format]
 description = "Format authored source and metadata"
 run = [
-  "oxfmt grammar.js luaux/grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
-  "clang-format -i common/scanner.h src/scanner.c luaux/src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h bindings/c/tree_sitter/tree-sitter-luaux.h",
+  "oxfmt grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
+  "clang-format -i common/scanner.h src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
 ]
 
 [tasks.check]
 description = "Run every project check"
-depends = ["lint", "test", "test:upstream", "test:upstream:luaux"]
+depends = ["lint", "test", "test:upstream"]
