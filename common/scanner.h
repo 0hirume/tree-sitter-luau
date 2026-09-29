@@ -22,6 +22,7 @@ static bool consume(TSLexer *lexer, int32_t character) {
   }
 
   advance(lexer);
+
   return true;
 }
 
@@ -30,6 +31,7 @@ static bool scan_long_bracket(TSLexer *lexer, bool comment) {
     if (!consume(lexer, '-')) {
       return false;
     }
+
     if (!consume(lexer, '-')) {
       return false;
     }
@@ -40,6 +42,7 @@ static bool scan_long_bracket(TSLexer *lexer, bool comment) {
   }
 
   unsigned delimiter_depth = 0;
+
   while (consume(lexer, '=')) {
     delimiter_depth++;
   }
@@ -55,17 +58,20 @@ static bool scan_long_bracket(TSLexer *lexer, bool comment) {
     }
 
     unsigned closing_depth = 0;
+
     while (consume(lexer, '=')) {
       closing_depth++;
     }
 
     if (closing_depth == delimiter_depth && consume(lexer, ']')) {
       lexer->mark_end(lexer);
+
       return true;
     }
   }
 
   lexer->mark_end(lexer);
+
   return true;
 }
 
@@ -78,16 +84,20 @@ static bool external_scanner_scan(TSLexer *lexer, const bool *valid_symbols) {
   if (lexer->lookahead == '-' && valid_symbols[BLOCK_COMMENT]) {
     if (scan_long_bracket(lexer, true)) {
       lexer->result_symbol = BLOCK_COMMENT;
+
       return true;
     }
+
     return false;
   }
 
   if (lexer->lookahead == '[' && valid_symbols[LONG_STRING]) {
     if (scan_long_bracket(lexer, false)) {
       lexer->result_symbol = LONG_STRING;
+
       return true;
     }
+
     return false;
   }
 

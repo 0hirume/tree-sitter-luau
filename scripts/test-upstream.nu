@@ -3,6 +3,7 @@
 def fail [message: string]: nothing -> error {
     error make {
         msg: $message
+
         label: {
             text: $message
             span: (metadata $message).span
@@ -20,6 +21,7 @@ def main []: nothing -> nothing {
     }
 
     let root: path = $root_path | path expand
+
     let ignored: list<string> = try {
         open --raw test/upstream-invalid.txt
         | lines
@@ -32,6 +34,7 @@ def main []: nothing -> nothing {
       | each {|path|
           {
             path: $path
+
             relative: (
               $path
               | path relative-to $root

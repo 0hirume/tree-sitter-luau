@@ -31,6 +31,7 @@ def clone-docs []: nothing -> nothing {
         "--single-branch"
         "--sparse"
     )
+
     (checked
         git
         "-C"
@@ -66,6 +67,7 @@ def publish []: nothing -> nothing {
         checked git push origin $"HEAD:($reference)"
     } else {
         let commit = $remote | split row (char tab) | first
+
         (checked
             git
             push
@@ -82,6 +84,7 @@ def publish []: nothing -> nothing {
         "--json" number
         "--jq" ".[0].number"
     ]
+
     let number = capture gh pr list ...$query
 
     if ($number | is-empty) {
@@ -91,6 +94,7 @@ def publish []: nothing -> nothing {
             "--title" $TITLE
             "--body" $BODY
         ]
+
         checked gh pr create ...$details
     }
 }

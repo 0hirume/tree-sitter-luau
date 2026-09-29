@@ -1,0 +1,3 @@
+#:schema https://raw.githubusercontent.com/0hirume/breathers/main/schema.json
+
+exclude = ["test", "vendor"]

@@ -25,6 +25,7 @@ def query-targets []: nothing -> list<record<path: string, local_aware: bool>> {
 def fail [msg: string]: nothing -> error {
     error make {
         msg: $msg
+
         label: {
             text: $msg
             span: (metadata $msg).span
@@ -68,6 +69,7 @@ def render-types [...types: string]: nothing -> string {
 
 def render-value-types [local_aware: bool, ...types: string]: nothing -> string {
     let rows: list<string> = render-names ...$types
+
     let end: list<string> = if $local_aware {
         ["  (#is-not? local))"]
     } else {
@@ -91,8 +93,10 @@ def generated-query [local_aware: bool]: nothing -> string {
     let spec: record = try {
         open (spec-path)
     } catch {|error| fail $"Failed to read the Roblox type snapshot: ($error.msg)" }
+
     let types: list<string> = $spec.types | each {|name| $name | into string }
     let value_types: list<string> = $spec.value_types | each {|name| $name | into string }
+
     let body: string = [
         (render-types ...$types)
         (render-value-types $local_aware ...$value_types)
@@ -105,6 +109,7 @@ def expected-query [path: path, local_aware: bool]: nothing -> string {
     let actual: string = try {
         open --raw $path
     } catch {|error| fail $"Failed to read the highlight query: ($error.msg)" }
+
     let start: list<string> = $actual | split row $START
 
     if ($start | length) != 2 {
@@ -138,6 +143,7 @@ def "main check" []: nothing -> nothing {
         let actual: string = try {
             open --raw $target.path
         } catch {|error| fail $"Failed to read the highlight query at ($target.path): ($error.msg)" }
+
         let expected: string = expected-query $target.path $target.local_aware
 
         if $actual != $expected {
@@ -165,6 +171,7 @@ def "main update" [
 
     let class_paths: list<path> = glob $"($class_dir | str replace --all (char --unicode 5c) /)/*.yaml"
     let datatype_paths: list<path> = glob $"($datatype_dir | str replace --all (char --unicode 5c) /)/*.yaml"
+
     let types: list<string> = (
     $class_paths
     | append $datatype_paths
@@ -173,12 +180,14 @@ def "main update" [
     | uniq
     | sort
   )
+
     let value_types: list<string> = (
     $datatype_paths
     | each {|path|
         let document: record = try {
             open $path
         } catch {|error| fail $"Failed to read Roblox datatype metadata from ($path): ($error.msg)" }
+
         let constructors: list = $document.constructors? | default []
         let constants: list = $document.constants? | default []
         let functions: list = $document.functions? | default []
@@ -198,29 +207,38 @@ def "main update" [
     let snapshot: record = {
         source: {
             repository: $"https://github.com/Roblox/creator-docs"
+
             revision: (
                 git-value $checkout log "-1" "--format=%H" "--" $CLASSES $DATATYPES
             )
+
             date: (
                 git-value $checkout log "-1" "--format=%cs" "--" $CLASSES $DATATYPES
             )
+
             directories: [$CLASSES $DATATYPES]
         }
+
         types: $types
         value_types: $value_types
     }
 
     let directory: path = $ROOT | path join spec
+
     try {
         mkdir $directory
     } catch {|error| fail $"Failed to create the snapshot directory: ($error.msg)" }
+
     let json: string = $snapshot | to json --indent 2
+
     try {
         $"($json)\n" | save --force (spec-path)
     } catch {|error| fail $"Failed to write the Roblox type snapshot: ($error.msg)" }
+
     try {
         cp --force ($checkout | path join $LICENSE) ($directory | path join $LICENSE)
     } catch {|error| fail $"Failed to copy the Creator Docs license: ($error.msg)" }
+
     sync
     print $"Imported ($types | length) Roblox types from ($checkout)"
 }
