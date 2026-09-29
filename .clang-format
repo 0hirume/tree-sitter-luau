@@ -1,4 +1,13 @@
-BasedOnStyle: LLVM
-IndentWidth: 2
-ColumnLimit: 100
-SortIncludes: CaseSensitive
+AlignAfterOpenBracket: DontAlign
+AllowAllArgumentsOnNextLine: false
+AllowShortFunctionsOnASingleLine:
+  Other: false
+BreakAfterOpenBracketFunction: true
+BreakBeforeCloseBracketFunction: true
+ColumnLimit: 210
+IndentExternBlock: Indent
+IndentWidth: 4
+InsertBraces: true
+NamespaceIndentation: All
+PackArguments:
+  BinPack: OnePerLine

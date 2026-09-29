@@ -48,6 +48,10 @@ mise run queries:copy -- [helix-checkout]
 Edit `grammar.js` for Luau rules and `common/scanner.h` for the external scanner.
 `mise run generate` refreshes the generated parser under `src/`.
 
+Authored C uses the Instar Bridge clang-format style. `.clangd` supplies C11 settings;
+`.clang-tidy` enables analyzer and bug-prone checks, with warnings treated as errors by `lint`.
+Generated parser code and upstream sources are excluded from native formatting and analysis checks.
+
 `mise run queries:copy -- [helix-checkout]` copies the Helix query set into the checkout's
 `runtime/queries/luau` directory. Without a checkout argument, it uses the first available Helix
 runtime. Register the repository root as the `luau` grammar.

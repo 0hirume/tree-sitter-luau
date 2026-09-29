@@ -48,7 +48,7 @@ depends = ["generate"]
 run = "nu scripts/test-upstream.nu"
 
 [tasks.lint]
-description = "Check source, workflows, formatting, and generated parser drift"
+description = "Check source, native analysis, workflows, formatting, and generated parser drift"
 depends = ["generate", "queries:check"]
 run = [
   "oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js",
@@ -56,6 +56,7 @@ run = [
   "zizmor --offline --pedantic .github",
   "oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml .github/workflows/ci.yml .github/workflows/types.yml README.md",
   "clang-format --dry-run --Werror common/scanner.h src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h",
+  "clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11 -Isrc",
   "git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter",
 ]
 

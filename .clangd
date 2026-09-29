@@ -1,0 +1,12 @@
+If:
+  PathMatch: [src/scanner\.c, common/scanner\.h, bindings/c/tree_sitter/tree-sitter-luau\.h]
+CompileFlags:
+  Add: [-xc, -std=c11, -I../src]
+---
+If:
+  PathMatch: [src/parser\.c, src/tree_sitter/.*, test/upstream/.*]
+Index:
+  Background: Skip
+Diagnostics:
+  ClangTidy:
+    Remove: ['*']
