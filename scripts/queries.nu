@@ -203,6 +203,7 @@ def "main copy" [
     assert ($editor in [helix mitos neovim zed]) $"Unknown editor: ($editor)"
 
     let variant: string = if $editor == "mitos" { "helix" } else { $editor }
+
     let source: path = $ROOT | path join queries $variant
     let queries: list<path> = glob $"($source | str replace --all (char --unicode 5c) /)/*.scm"
     let target: path = $runtime | path expand | path join queries luau
