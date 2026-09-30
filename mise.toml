@@ -3,6 +3,7 @@
 "aqua:nushell/nushell" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
 "github:0hirume/breathers" = "latest"
+"github:blankspruce/gersemi" = "latest"
 "github:llvm/llvm-project" = "latest"
 "npm:oxfmt" = "latest"
 "npm:oxlint" = "latest"
