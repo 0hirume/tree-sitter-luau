@@ -3,7 +3,12 @@ use std/assert
 const CHECKOUT = ".upstream/creator-docs"
 const BRANCH = "automation/update-types"
 const TITLE = "chore: update Roblox types"
-const FILES = [spec/roblox-types.json spec/LICENSE queries/highlights.scm queries/neovim/highlights.scm]
+const FILES = [
+    spec/roblox-types.json
+    spec/LICENSE
+    queries/highlights.scm
+    queries/neovim/highlights.scm
+]
 
 def main []: nothing -> nothing {
     git clone --filter=blob:none --single-branch --sparse https://github.com/Roblox/creator-docs.git $CHECKOUT
