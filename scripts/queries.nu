@@ -202,7 +202,7 @@ def "main copy" [
 ]: nothing -> nothing {
     assert ($editor in [helix mitos neovim zed]) $"Unknown editor: ($editor)"
 
-    let variant: string = if $editor == "mitos" { "helix" } else { $editor }
+    let variant: string = if $editor == mitos { "helix" } else { $editor }
 
     let source: path = $ROOT | path join queries $variant
     let queries: list<path> = glob $"($source | str replace --all (char --unicode 5c) /)/*.scm"
@@ -213,6 +213,6 @@ def "main copy" [
     print $"Copied ($editor) queries to ($target)"
 }
 
-def main [] {
+def main []: nothing -> nothing {
     assert false "usage: nu scripts/queries.nu <check|sync|update <creator-docs>|copy <editor> <runtime>>"
 }

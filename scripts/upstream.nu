@@ -20,10 +20,7 @@ def main []: nothing -> nothing {
 
     let files: list<path> = (
         glob test/upstream/luau/**/*.luau
-        | where {|file|
-            let relative = $file | path relative-to $root | path split | str join /
-            $relative not-in $ignored
-        }
+        | where (($it | path relative-to $root | path split | str join /) not-in $ignored)
     )
 
     assert ($files | is-not-empty) "Luau submodule contains no .luau fixtures"
