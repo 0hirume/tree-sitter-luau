@@ -9,7 +9,7 @@ mise install
 git submodule update --init --recursive
 tree-sitter generate --js-runtime native --abi 15
 tree-sitter test
-nu scripts/test-upstream.nu
+nu scripts/upstream.nu
 ```
 
 ## C library

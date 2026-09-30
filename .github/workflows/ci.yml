@@ -33,7 +33,7 @@ jobs:
         run: |
           tree-sitter generate --js-runtime native --abi 15
           tree-sitter test
-          nu scripts/test-upstream.nu
+          nu scripts/upstream.nu
           nu scripts/queries.nu check
           git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter
 

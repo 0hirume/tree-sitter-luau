@@ -33,4 +33,4 @@ jobs:
           BASE_BRANCH: ${{ github.event.repository.default_branch }}
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
-        run: nu .github/types.nu
+        run: nu scripts/types.nu
