@@ -47,3 +47,23 @@ end
 
 consume(current)
 --      ^^^^^^^ constant
+
+local selected = current
+local result = if local current = current
+--                ^^^^^ keyword.storage.modifier
+--                      ^^^^^^^ variable
+--                                ^^^^^^^ constant
+then current
+--   ^^^^^^^ variable
+elseif const selected = selected
+--     ^^^^^ keyword.storage.modifier
+--           ^^^^^^^^ constant
+--                      ^^^^^^^^ variable
+then selected
+--   ^^^^^^^^ constant
+else current
+--   ^^^^^^^ constant
+
+consume(current, selected)
+--      ^^^^^^^ constant
+--               ^^^^^^^^ variable

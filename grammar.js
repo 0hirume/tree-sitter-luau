@@ -299,15 +299,16 @@ module.exports = grammar({
         "end",
       ),
 
-    if_local_clause: ($) =>
+    _if_local_condition: ($) =>
       seq(
         choice("local", "const"),
         field("binding", $.binding),
         "=",
         field("condition", $._expression),
         "then",
-        optional(field("consequence", $.block)),
       ),
+
+    if_local_clause: ($) => seq($._if_local_condition, optional(field("consequence", $.block))),
 
     elseif_clause: ($) =>
       seq(
@@ -380,9 +381,10 @@ module.exports = grammar({
       prec.right(
         seq(
           "if",
-          field("condition", $._expression),
-          "then",
-          field("consequence", $._expression),
+          choice(
+            seq(field("condition", $._expression), "then", field("consequence", $._expression)),
+            $.if_local_expression_clause,
+          ),
           repeat(field("alternative", $.elseif_expression_clause)),
           "else",
           field("alternative", $._expression),
@@ -390,7 +392,16 @@ module.exports = grammar({
       ),
 
     elseif_expression_clause: ($) =>
-      seq("elseif", field("condition", $._expression), "then", field("consequence", $._expression)),
+      seq(
+        "elseif",
+        choice(
+          seq(field("condition", $._expression), "then", field("consequence", $._expression)),
+          $.if_local_expression_clause,
+        ),
+      ),
+
+    if_local_expression_clause: ($) =>
+      seq($._if_local_condition, field("consequence", $._expression)),
 
     unary_expression: ($) =>
       prec(

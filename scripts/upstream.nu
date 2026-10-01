@@ -25,5 +25,13 @@ def main []: nothing -> nothing {
 
     assert ($files | is-not-empty) "Luau submodule contains no .luau fixtures"
 
-    tree-sitter parse --config-path test/config.json --grammar-path . ...$files --quiet --stat
+    let manifest: path = mktemp
+    $files | str join (char newline) | save --force $manifest
+
+    let result: record = tree-sitter parse --config-path test/config.json --grammar-path . --paths $manifest --quiet --stat | complete
+    rm $manifest
+
+    print --no-newline $result.stdout
+    print --stderr --no-newline $result.stderr
+    exit $result.exit_code
 }

@@ -349,3 +349,33 @@ end
             (arguments
               (expression_list
                 (identifier)))))))))
+
+==================
+If-local expressions
+==================
+
+local result = if local item: string = source then item elseif const fallback = source then fallback else source
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (if_expression
+        (if_local_expression_clause
+          (binding
+            (identifier)
+            (type_reference
+              (identifier)))
+          (identifier)
+          (identifier))
+        (elseif_expression_clause
+          (if_local_expression_clause
+            (binding
+              (identifier))
+            (identifier)
+            (identifier)))
+        (identifier)))))

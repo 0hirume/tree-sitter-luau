@@ -4,9 +4,16 @@
   (block)
   (function_body)
   (if_local_clause)
+  (if_local_expression_clause)
 ] @local.scope
 
-(binding name: (identifier) @local.definition @local.definition.variable)
+(binding_list
+  (binding name: (identifier) @local.definition @local.definition.variable))
+(numeric_for_statement
+  binding: (binding name: (identifier) @local.definition @local.definition.variable))
+(_
+  binding: (binding name: (identifier) @local.definition @local.definition.variable)
+  condition: (_) @local.definition-value)
 ((local_declaration
   bindings: (binding_list
     .
@@ -22,7 +29,12 @@
     (binding name: (identifier) @local.definition @local.definition.constant)))
 (if_local_clause
   "const"
-  binding: (binding name: (identifier) @local.definition @local.definition.constant))
+  binding: (binding name: (identifier) @local.definition @local.definition.constant)
+  condition: (_) @local.definition-value)
+(if_local_expression_clause
+  "const"
+  binding: (binding name: (identifier) @local.definition @local.definition.constant)
+  condition: (_) @local.definition-value)
 (parameter name: (identifier) @local.definition @local.definition.variable.parameter)
 (declare_parameter name: (identifier) @local.definition @local.definition.variable.parameter)
 

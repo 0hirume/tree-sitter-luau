@@ -115,6 +115,11 @@
     "local"
     "const"
   ] @keyword.storage.modifier)
+(if_local_expression_clause
+  [
+    "local"
+    "const"
+  ] @keyword.storage.modifier)
 (declare_global "declare" @keyword.storage.modifier)
 (declare_function "declare" @keyword.storage.modifier)
 (extern_type_declaration
@@ -222,6 +227,9 @@
   bindings: (binding_list
     (binding name: (identifier) @constant)))
 (if_local_clause
+  "const"
+  binding: (binding name: (identifier) @constant))
+(if_local_expression_clause
   "const"
   binding: (binding name: (identifier) @constant))
 (parameter name: (identifier) @variable.parameter)
