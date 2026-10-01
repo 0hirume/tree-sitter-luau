@@ -34,10 +34,10 @@ local handlers = {
   -- <- function.method
 }
 
-local part: Part = Instance.new("Part")
+local part: Part? = Instance.new("Part")
 --          ^^^^ type.builtin
---                 ^^^^^^^^ type.builtin
---                          ^^^ function
+--                  ^^^^^^^^ type.builtin
+--                           ^^^ function
 
 local size = UDim2.fromOffset(0, 0)
 --           ^^^^^ type.builtin
@@ -45,9 +45,6 @@ local size = UDim2.fromOffset(0, 0)
 
 local key = Enum.KeyCode.F4
 --          ^^^^ type.builtin
-
-local annotation: WorkspaceAnnotation? = nil
---                ^^^^^^^^^^^^^^^^^^^ type.builtin
 
 local finite = math.isfinite(1)
 --             ^ variable.builtin
