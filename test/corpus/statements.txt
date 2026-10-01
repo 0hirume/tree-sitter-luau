@@ -143,3 +143,98 @@ end
         (return_statement
           (expression_list
             (identifier)))))))
+
+==================
+Statement separators and terminal return
+==================
+
+do
+  local value = 1;
+  print(value);
+  return value;
+end
+
+---
+
+(source_file
+  (do_statement
+    (block
+      (local_declaration
+        (binding_list
+          (binding
+            (identifier)))
+        (expression_list
+          (number)))
+      (expression_statement
+        (call_expression
+          (identifier)
+          (arguments
+            (expression_list
+              (identifier)))))
+      (return_statement
+        (expression_list
+          (identifier))))))
+
+==================
+Missing type
+:error
+==================
+
+type X =
+
+---
+
+
+
+==================
+Reserved binding name
+:error
+==================
+
+local for = 1
+
+---
+
+
+
+==================
+Statement after return
+:error
+==================
+
+do return 1; print(2) end
+
+---
+
+
+
+==================
+Statement after break
+:error
+==================
+
+while true do break; print(2) end
+
+---
+
+
+
+==================
+Statement after continue
+:error
+==================
+
+while true do continue; print(2) end
+
+---
+
+
+
+==================
+Unattached statement separators
+:error
+==================
+
+;;;
+
+---

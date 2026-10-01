@@ -15,14 +15,15 @@ local value = factory<<string, number>>(config).result[index]:format("%d")
       (method_call_expression
         (index_expression
           (field_expression
-            (type_instantiation_expression
-              (identifier)
-              (explicit_type_arguments
-                (type_argument_list
-                  (type_reference
-                    (identifier))
-                  (type_reference
-                    (identifier))))
+            (call_expression
+              (type_instantiation_expression
+                (identifier)
+                (explicit_type_arguments
+                  (type_argument_list
+                    (type_reference
+                      (identifier))
+                    (type_reference
+                      (identifier)))))
               (arguments
                 (expression_list
                   (identifier))))
@@ -120,7 +121,7 @@ local first, second = object:method<<(string, number)>>(1, "a")
       (binding
         (identifier)))
     (expression_list
-      (type_instantiation_expression
+      (method_call_expression
         (identifier)
         (identifier)
         (explicit_type_arguments
@@ -224,3 +225,439 @@ assert(table.concat{} == "")
                 (table_constructor)))
             (string
               (quoted_string))))))))
+
+==================
+Standalone and called type instantiations
+==================
+
+local standalone = factory<<>>
+local called = factory<<>>()
+local indexed = values[1]<<string>>
+local chained = factory<<string>><<number>>
+local parenthesized = (factory)<<string>>
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (identifier)
+        (explicit_type_arguments))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (call_expression
+        (type_instantiation_expression
+          (identifier)
+          (explicit_type_arguments))
+        (arguments))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (index_expression
+          (identifier)
+          (number))
+        (explicit_type_arguments
+          (type_argument_list
+            (type_reference
+              (identifier)))))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (type_instantiation_expression
+          (identifier)
+          (explicit_type_arguments
+            (type_argument_list
+              (type_reference
+                (identifier)))))
+        (explicit_type_arguments
+          (type_argument_list
+            (type_reference
+              (identifier)))))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (type_instantiation_expression
+        (parenthesized_expression
+          (identifier))
+        (explicit_type_arguments
+          (type_argument_list
+            (type_reference
+              (identifier))))))))
+
+==================
+Specialized method calls
+==================
+
+local result = object:method<<(string, number)>>(1, "a")
+local empty = object:method<<>>()
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (method_call_expression
+        (identifier)
+        (identifier)
+        (explicit_type_arguments
+          (type_argument_list
+            (type_pack
+              (type_list
+                (type_reference
+                  (identifier))
+                (type_reference
+                  (identifier))))))
+        (arguments
+          (expression_list
+            (number)
+            (string
+              (quoted_string
+                (string_content))))))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (method_call_expression
+        (identifier)
+        (identifier)
+        (explicit_type_arguments)
+        (arguments)))))
+
+==================
+Interpolation delimiters and escaped newlines
+==================
+
+local spaced = ` {value} `
+local escaped = `literal \{ brace`
+local line = "escaped\
+newline"
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (interpolated_string
+          (interpolation_content)
+          (identifier)
+          (interpolation_content)))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (interpolated_string
+          (interpolation_content)
+          (escape_sequence
+            (simple_escape))
+          (interpolation_content)))))
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (quoted_string
+          (string_content)
+          (escape_sequence
+            (simple_escape))
+          (string_content))))))
+
+================================
+Standalone specialization statement
+:error
+================================
+
+factory<<T>>
+
+---
+
+
+
+================================
+Backtick call shorthand
+:error
+================================
+
+f`text`
+
+---
+
+
+
+================================
+Doubled interpolation opening
+:error
+================================
+
+local invalid = `{{value}}`
+
+---
+
+
+
+================================
+Hex fractional literal
+:error
+================================
+
+local invalid = 0x1.2
+
+---
+
+
+
+================================
+Hex exponent literal
+:error
+================================
+
+local invalid = 0x1p2
+
+---
+
+
+
+================================
+Out-of-range decimal escape
+:error
+================================
+
+local invalid = "\256"
+
+---
+
+
+
+================================
+Out-of-range escape with suffix
+:error
+================================
+
+local invalid = "\2560"
+
+---
+
+
+
+================================
+Malformed hex escape
+:error
+================================
+
+local invalid = "\xG0"
+
+---
+
+
+
+================================
+Malformed Unicode escape
+:error
+================================
+
+local invalid = "\u{G}"
+
+---
+
+
+
+================================
+Unterminated long string
+:error
+================================
+
+local invalid = [=[unterminated
+
+---
+
+
+
+================================
+Chained assertions
+:error
+================================
+
+local invalid = value :: T :: U
+
+---
+
+
+
+================================
+Trailing function parameter comma
+:error
+================================
+
+local invalid = function(a,) end
+
+---
+
+
+
+================================
+Trailing call argument comma
+:error
+================================
+
+local invalid = f(a,)
+
+---
+
+
+
+==================
+Decimal escape boundary
+==================
+
+local escaped = "\000\2550"
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (string
+        (quoted_string
+          (escape_sequence
+            (decimal_escape))
+          (escape_sequence
+            (decimal_escape))
+          (string_content))))))
+
+==================
+Table semicolon separators
+==================
+
+local values = {1; 2;}
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list
+      (binding
+        (identifier)))
+    (expression_list
+      (table_constructor
+        (table_field
+          (number))
+        (table_field
+          (number))))))
+
+================================
+Specialized method requires call arguments
+:error
+================================
+
+local invalid = object:method<<string>>
+
+---
+
+
+
+==================
+Semicolons in attribute literal tables
+==================
+
+@[deprecated{use="g"; reason="old";}] function f() end
+
+---
+
+(source_file
+  (function_declaration
+    (attributes
+      (attribute
+        (parameterized_attribute
+          (identifier)
+          (attribute_argument
+            (literal_table
+              (literal_field
+                (identifier)
+                (quoted_string
+                  (string_content)))
+              (literal_field
+                (identifier)
+                (quoted_string
+                  (string_content))))))))
+    (function_name
+      (identifier))
+    (function_body
+      (parameter_list))))
+
+==================
+Empty table separator
+:error
+==================
+
+local invalid = {;}
+
+---
+
+
+
+==================
+Repeated table separator
+:error
+==================
+
+local invalid = {1,;}
+
+---
+
+
+
+==================
+Escaped carriage returns
+==================
+
+local carriage = "escaped\tail"
+local windows = "escaped\
+tail"
+
+---
+
+(source_file
+  (local_declaration
+    (binding_list (binding (identifier)))
+    (expression_list
+      (string
+        (quoted_string
+          (string_content)
+          (escape_sequence (simple_escape))
+          (string_content)))))
+  (local_declaration
+    (binding_list (binding (identifier)))
+    (expression_list
+      (string
+        (quoted_string
+          (string_content)
+          (escape_sequence (simple_escape))
+          (string_content))))))

@@ -7,6 +7,8 @@
 enum TokenType {
     BLOCK_COMMENT,
     LONG_STRING,
+    INTERPOLATION_OPEN,
+    DECIMAL_ESCAPE,
 };
 
 static void advance(TSLexer *lexer) {
@@ -71,9 +73,7 @@ static bool scan_long_bracket(TSLexer *lexer, bool comment) {
         }
     }
 
-    lexer->mark_end(lexer);
-
-    return true;
+    return false;
 }
 
 void *tree_sitter_luau_external_scanner_create(void) {
@@ -100,8 +100,50 @@ void tree_sitter_luau_external_scanner_deserialize(void *payload, const char *bu
 bool tree_sitter_luau_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
     (void)payload;
 
-    while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f' || lexer->lookahead == '\r' || lexer->lookahead == '\n') {
-        skip(lexer);
+    if (valid_symbols[DECIMAL_ESCAPE] && lexer->lookahead == '\\') {
+        advance(lexer);
+
+        if (lexer->lookahead < '0' || lexer->lookahead > '9') {
+            return false;
+        }
+
+        unsigned value = 0;
+        unsigned digits = 0;
+
+        do {
+            value = value * 10 + (unsigned)(lexer->lookahead - '0');
+            digits++;
+            advance(lexer);
+        } while (digits < 3 && lexer->lookahead >= '0' && lexer->lookahead <= '9');
+
+        if (value > 255) {
+            return false;
+        }
+
+        lexer->mark_end(lexer);
+        lexer->result_symbol = DECIMAL_ESCAPE;
+
+        return true;
+    }
+
+    if (valid_symbols[INTERPOLATION_OPEN] && lexer->lookahead == '{') {
+        advance(lexer);
+
+        if (lexer->lookahead == '{') {
+            return false;
+        }
+
+        lexer->mark_end(lexer);
+
+        lexer->result_symbol = INTERPOLATION_OPEN;
+
+        return true;
+    }
+
+    if (!valid_symbols[INTERPOLATION_OPEN] && !valid_symbols[DECIMAL_ESCAPE]) {
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f' || lexer->lookahead == '\r' || lexer->lookahead == '\n') {
+            skip(lexer);
+        }
     }
 
     if (lexer->lookahead == '-' && valid_symbols[BLOCK_COMMENT]) {

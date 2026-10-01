@@ -253,14 +253,10 @@
   arguments: (arguments) @_arguments
   (#not-eq? @_arguments ""))
 (method_call_expression method: (identifier) @function.method)
-(method_call_expression method: (identifier _ @function.method))
 (type_instantiation_expression function: (identifier) @function)
-(type_instantiation_expression method: (identifier) @function.method)
 
 (field_expression field: (identifier) @variable.other.member)
-(field_expression field: (identifier _ @variable.other.member))
 (table_field key: (identifier) @variable.other.member)
-(table_field key: (identifier _ @variable.other.member))
 (table_field
   key: (identifier) @function.method
   value: (function_expression))
@@ -450,7 +446,6 @@
 ([
   (field_expression table: (identifier) @type.builtin)
   (method_call_expression receiver: (identifier) @type.builtin)
-  (type_instantiation_expression receiver: (identifier) @type.builtin)
 ]
   (#any-of? @type.builtin
     "Axes" "BrickColor" "CFrame" "Color3" "ColorSequence"

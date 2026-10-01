@@ -63,7 +63,6 @@ def render-value-types [local_aware: bool, ...types: string]: nothing -> string 
         "(["
         "  (field_expression table: (identifier) @type.builtin)"
         "  (method_call_expression receiver: (identifier) @type.builtin)"
-        "  (type_instantiation_expression receiver: (identifier) @type.builtin)"
         "]"
         "  (#any-of? @type.builtin"
         ...$rows
