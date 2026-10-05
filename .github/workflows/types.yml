@@ -12,7 +12,6 @@ concurrency:
 
 jobs:
   update:
-    name: update
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -23,10 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: install nushell
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          install_args: aqua:nushell/nushell
+      - uses: hustcer/setup-nu@95cd3bfe252450ef7d35dd9a7ddecf3484341134 # v3.28
 
       - name: update types
         env:

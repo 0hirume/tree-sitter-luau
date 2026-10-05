@@ -1,2 +1,6 @@
 [tools]
 "aqua:tree-sitter/tree-sitter" = "latest"
+"conda:clang-format" = "latest"
+"conda:clang-tools" = "latest"
+"npm:oxfmt" = "latest"
+"npm:oxlint" = "latest"

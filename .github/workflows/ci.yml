@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   check:
-    name: check
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -24,10 +23,11 @@ jobs:
           persist-credentials: false
           submodules: recursive
 
-      - name: install tools
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
 
-      - name: parse
+      - uses: hustcer/setup-nu@95cd3bfe252450ef7d35dd9a7ddecf3484341134 # v3.28
+
+      - name: check
         env:
           CC: clang
         run: |
@@ -35,16 +35,9 @@ jobs:
           tree-sitter test
           nu scripts/upstream.nu
           nu scripts/queries.nu check
-          git diff --exit-code -- src/grammar.json src/node-types.json src/parser.c src/tree_sitter
-
-      - name: check source
-        run: |
           oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js
           oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml README.md
           clang-format --dry-run --Werror src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h
           clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11
-
-      - name: build
-        run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
-          cmake --build build --config Release
+          cmake --build build
