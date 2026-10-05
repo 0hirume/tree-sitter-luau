@@ -33,11 +33,15 @@ jobs:
         run: |
           tree-sitter generate --js-runtime native --abi 15
           tree-sitter test
+
           nu scripts/upstream.nu
           nu scripts/queries.nu check
+
           oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js
           oxfmt --check grammar.js
+
           clang-format --dry-run --Werror src/scanner.c
           clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11 -resource-dir="$(clang -print-resource-dir)"
+
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
           cmake --build build
