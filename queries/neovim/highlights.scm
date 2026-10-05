@@ -295,12 +295,10 @@
 (type_reference module: (identifier) @namespace)
 (type_reference name: (identifier) @type)
 
-[
-  (generic_type_definition name: (identifier))
-  (generic_type_pack_definition name: (identifier))
-  (generic_type name: (identifier))
-  (generic_type_pack name: (identifier))
-] @type.parameter
+(generic_type_definition name: (identifier) @type.parameter)
+(generic_type_pack_definition name: (identifier) @type.parameter)
+(generic_type name: (identifier) @type.parameter)
+(generic_type_pack name: (identifier) @type.parameter)
 
 ((type_reference name: (identifier) @type.builtin)
   (#any-of? @type.builtin

@@ -132,3 +132,23 @@ local function recover_field_call_highlight()
   charm.flags
   --    ^^^^^ variable.other.member
 end
+
+export type Example<Element> = (Element?) -> ()
+--                  ^^^^^^^ type.parameter
+--                              ^^^^^^^ type
+
+type Packed<Value = string, Remaining... = ()> = () -> (Value, Remaining...)
+--          ^^^^^ type.parameter
+--                  ^^^^^^ type.builtin
+--                          ^^^^^^^^^ type.parameter
+--                                                      ^^^^^ type
+--                                                             ^^^^^^^^^ type.parameter
+
+local function collect<Value, Remaining...>(value: Value, ...: Remaining...): Value
+--                     ^^^^^ type.parameter
+--                            ^^^^^^^^^ type.parameter
+--                                                 ^^^^^ type
+--                                                             ^^^^^^^^^ type.parameter
+--                                                                            ^^^^^ type
+  return value
+end
