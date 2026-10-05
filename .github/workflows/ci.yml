@@ -38,6 +38,6 @@ jobs:
           oxlint -D correctness -D suspicious -D perf -A no-underscore-dangle --deny-warnings grammar.js
           oxfmt --check grammar.js tree-sitter.json test/config.json mise.toml README.md
           clang-format --dry-run --Werror src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h
-          clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11
+          clang-tidy src/scanner.c bindings/c/tree_sitter/tree-sitter-luau.h -- -xc -std=c11 -resource-dir="$(clang -print-resource-dir)"
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
           cmake --build build
