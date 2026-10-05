@@ -1,12 +1,2 @@
 [tools]
-"aqua:Kitware/CMake" = "latest"
-"aqua:nushell/nushell" = "latest"
 "aqua:tree-sitter/tree-sitter" = "latest"
-"github:0hirume/breathers" = "latest"
-"github:blankspruce/gersemi" = "latest"
-"github:llvm/llvm-project" = "latest"
-"npm:oxfmt" = "latest"
-"npm:oxlint" = "latest"
-"npm:typescript" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:yaml-language-server" = "latest"
