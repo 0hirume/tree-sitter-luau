@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "https://github.com/Roblox/creator-docs",
-    "revision": "578b33e83e5137b880eb594523159a6f1f691265",
-    "date": "2026-10-01",
+    "revision": "4fc8478587ee7c1a412403d76baff4d0ede578d4",
+    "date": "2026-10-09",
     "directories": [
       "content/en-us/reference/engine/classes",
       "content/en-us/reference/engine/datatypes"
