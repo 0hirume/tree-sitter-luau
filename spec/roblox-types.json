@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "https://github.com/Roblox/creator-docs",
-    "revision": "578b33e83e5137b880eb594523159a6f1f691265",
-    "date": "2026-10-01",
+    "revision": "710b20a5f4f1f4567c025786f6f1833c749f9d7e",
+    "date": "2026-10-16",
     "directories": [
       "content/en-us/reference/engine/classes",
       "content/en-us/reference/engine/datatypes"
@@ -319,6 +319,7 @@
     "LocalizationService",
     "LocalizationTable",
     "LogService",
+    "Logger",
     "LoginService",
     "LuaSettings",
     "LuaSourceContainer",
