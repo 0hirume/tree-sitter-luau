@@ -1,13 +1,16 @@
+AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
 AllowAllArgumentsOnNextLine: false
-AllowShortFunctionsOnASingleLine:
-  Other: false
+AllowShortFunctionsOnASingleLine: Empty
 BreakAfterOpenBracketFunction: true
 BreakBeforeCloseBracketFunction: true
-ColumnLimit: 210
+ColumnLimit: 120
 IndentExternBlock: Indent
 IndentWidth: 4
 InsertBraces: true
 NamespaceIndentation: All
 PackArguments:
   BinPack: OnePerLine
+IncludeBlocks: Regroup
+SeparateDefinitionBlocks: Always
+FixNamespaceComments: false

@@ -141,7 +141,8 @@ bool tree_sitter_luau_external_scanner_scan(void *payload, TSLexer *lexer, const
     }
 
     if (!valid_symbols[INTERPOLATION_OPEN] && !valid_symbols[DECIMAL_ESCAPE]) {
-        while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' || lexer->lookahead == '\f' || lexer->lookahead == '\r' || lexer->lookahead == '\n') {
+        while (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\v' ||
+               lexer->lookahead == '\f' || lexer->lookahead == '\r' || lexer->lookahead == '\n') {
             skip(lexer);
         }
     }
