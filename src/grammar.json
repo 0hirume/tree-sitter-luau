@@ -6349,31 +6349,100 @@
       ]
     },
     "line_comment": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "--"
-          },
-          {
-            "type": "PATTERN",
-            "value": "[^\\r\\n]*"
-          }
-        ]
-      }
-    },
-    "_comment": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "line_comment"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_line_comment_start"
+          },
+          "named": true,
+          "value": "comment_delimiter"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_line_comment_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_line_comment_continuation"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_line_comment_prefix"
+                },
+                "named": true,
+                "value": "comment_delimiter"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_line_comment_content"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "type": "SYMBOL",
-          "name": "block_comment"
+          "name": "_line_comment_end"
+        }
+      ]
+    },
+    "block_comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_block_comment_start"
+          },
+          "named": true,
+          "value": "comment_delimiter"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_block_comment_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_block_comment_end"
+          },
+          "named": true,
+          "value": "comment_delimiter"
         }
       ]
     }
@@ -6385,7 +6454,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_comment"
+      "name": "line_comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "block_comment"
     }
   ],
   "conflicts": [
@@ -6432,7 +6505,35 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "block_comment"
+      "name": "_block_comment_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_block_comment_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_block_comment_end"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_line_comment_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_line_comment_continuation"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_line_comment_prefix"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_line_comment_end"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_line_comment_content"
     },
     {
       "type": "SYMBOL",

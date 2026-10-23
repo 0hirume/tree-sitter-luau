@@ -85,9 +85,21 @@ const BINARY_OPERATORS = [
 module.exports = grammar({
   name: "luau",
 
-  extras: ($) => [/[ \t\v\f\r\n]/, $._comment],
+  extras: ($) => [/[ \t\v\f\r\n]/, $.line_comment, $.block_comment],
 
-  externals: ($) => [$.block_comment, $.long_string, $._interpolation_open, $.decimal_escape],
+  externals: ($) => [
+    $._block_comment_start,
+    $._block_comment_content,
+    $._block_comment_end,
+    $._line_comment_start,
+    $._line_comment_continuation,
+    $._line_comment_prefix,
+    $._line_comment_end,
+    $._line_comment_content,
+    $.long_string,
+    $._interpolation_open,
+    $.decimal_escape,
+  ],
 
   reserved: {
     global: () => HARD_KEYWORDS,
@@ -925,9 +937,26 @@ module.exports = grammar({
     _identifier: ($) =>
       choice($.identifier, ...CONTEXTUAL_KEYWORDS.map((keyword) => alias(keyword, $.identifier))),
 
-    line_comment: () => token(seq("--", /[^\r\n]*/)),
+    line_comment: ($) =>
+      seq(
+        alias($._line_comment_start, $.comment_delimiter),
+        optional($._line_comment_content),
+        repeat(
+          seq(
+            $._line_comment_continuation,
+            alias($._line_comment_prefix, $.comment_delimiter),
+            optional($._line_comment_content),
+          ),
+        ),
+        $._line_comment_end,
+      ),
 
-    _comment: ($) => choice($.line_comment, $.block_comment),
+    block_comment: ($) =>
+      seq(
+        alias($._block_comment_start, $.comment_delimiter),
+        optional($._block_comment_content),
+        alias($._block_comment_end, $.comment_delimiter),
+      ),
   },
 });
 
