@@ -102,6 +102,7 @@ static bool scan_comment_start(Scanner *scanner, TSLexer *lexer, bool standalone
             return true;
         }
     } else {
+        consume(lexer, '-');
         consume(lexer, ' ');
         lexer->mark_end(lexer);
     }
