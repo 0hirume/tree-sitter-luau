@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "https://github.com/Roblox/creator-docs",
-    "revision": "142c1054364c20525ae92e7aedfcd7f2c2a4bfc3",
-    "date": "2026-10-22",
+    "revision": "c8f5276703948ef4868c9b9fd44fae619dbe2f11",
+    "date": "2026-10-29",
     "directories": [
       "content/en-us/reference/engine/classes",
       "content/en-us/reference/engine/datatypes"
@@ -302,6 +302,7 @@
     "InstanceHandle",
     "IntConstrainedValue",
     "IntValue",
+    "IntegrityService",
     "IntersectOperation",
     "InventoryPages",
     "JointInstance",
