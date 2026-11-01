@@ -228,16 +228,6 @@
 (extern_method name: (identifier) @function.method)
 (class_method name: (identifier) @function.method)
 
-(call_expression
-  function: (identifier) @function
-  .
-  [
-    (line_comment)
-    (block_comment)
-  ]*
-  .
-  arguments: (arguments) @_arguments
-  (#not-eq? @_arguments ""))
 (method_call_expression method: (identifier) @function.method)
 (type_instantiation_expression function: (identifier) @function)
 
@@ -247,8 +237,10 @@
   key: (identifier) @function.method
   value: (function_expression))
 (call_expression
-  function: (field_expression
-    field: (identifier) @function)
+  function: [
+    (identifier) @function
+    (field_expression field: (identifier) @function)
+  ]
   .
   [
     (line_comment)

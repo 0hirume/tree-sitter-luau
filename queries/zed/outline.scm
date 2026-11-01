@@ -18,11 +18,9 @@
 
 (assignment_statement
   left: (assignment_target_list
-    (identifier) @name)
-  right: (expression_list
-    (function_expression))) @item
-(assignment_statement
-  left: (assignment_target_list
-    (field_expression field: (identifier) @name))
+    [
+      (identifier) @name
+      (field_expression field: (identifier) @name)
+    ])
   right: (expression_list
     (function_expression))) @item
