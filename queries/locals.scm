@@ -28,15 +28,7 @@
 (const_declaration
   bindings: (binding_list
     (binding name: (identifier) @local.definition @local.definition.constant)))
-(if_local_clause
-  "const"
-  binding: (binding name: (identifier) @local.definition @local.definition.constant)
-  condition: (_) @local.definition-value)
-(if_local_expression_clause
-  "const"
-  binding: (binding name: (identifier) @local.definition @local.definition.constant)
-  condition: (_) @local.definition-value)
-(while_statement
+(_
   "const"
   binding: (binding name: (identifier) @local.definition @local.definition.constant)
   condition: (_) @local.definition-value)

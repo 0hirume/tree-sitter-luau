@@ -90,11 +90,8 @@
 (function_body "end" @keyword.function)
 
 "function" @keyword.function
-"local" @keyword.storage.modifier
 
-(type_alias_declaration "type" @keyword.storage.type)
-(type_function_declaration "type" @keyword.storage.type)
-(extern_type_declaration "type" @keyword.storage.type)
+"type" @keyword.storage.type
 
 [
   "in"
@@ -105,40 +102,20 @@
 
 (typeof_type "typeof" @keyword.operator)
 
-(access_qualifier) @keyword.storage.modifier
-(const_declaration "const" @keyword.storage.modifier)
-(const_function_declaration "const" @keyword.storage.modifier)
-(while_statement "const" @keyword.storage.modifier)
-(class_declaration "open" @keyword.storage.modifier)
-(class_declaration "class" @keyword.storage.modifier)
-(if_local_clause
-  [
-    "local"
-    "const"
-  ] @keyword.storage.modifier)
-(if_local_expression_clause
-  [
-    "local"
-    "const"
-  ] @keyword.storage.modifier)
-(declare_global "declare" @keyword.storage.modifier)
-(declare_function "declare" @keyword.storage.modifier)
-(extern_type_declaration
-  "declare" @keyword.storage.modifier
-  "extern" @keyword.storage.modifier)
-(class_property
-  ["public" "private"] @keyword.storage.modifier)
-(class_method
-  ["public" "private"] @keyword.storage.modifier)
-(class_declaration "extends" @keyword.storage.modifier)
-(extern_type_declaration "extends" @keyword.storage.modifier)
-(extern_type_declaration "with" @keyword.storage.modifier)
-(local_declaration "export" @keyword.storage.modifier)
-(const_declaration "export" @keyword.storage.modifier)
-(function_declaration "export" @keyword.storage.modifier)
-(class_declaration "export" @keyword.storage.modifier)
-(type_alias_declaration "export" @keyword.storage.modifier)
-(type_function_declaration "export" @keyword.storage.modifier)
+[
+  (access_qualifier)
+  "local"
+  "const"
+  "export"
+  "declare"
+  "extern"
+  "class"
+  "open"
+  "public"
+  "private"
+  "extends"
+  "with"
+] @keyword.storage.modifier
 
 [
   "+"
@@ -229,15 +206,10 @@
 (const_declaration
   bindings: (binding_list
     (binding name: (identifier) @constant)))
-(if_local_clause
+(_
   "const"
-  binding: (binding name: (identifier) @constant))
-(if_local_expression_clause
-  "const"
-  binding: (binding name: (identifier) @constant))
-(while_statement
-  "const"
-  binding: (binding name: (identifier) @constant))
+  binding: (binding name: (identifier) @constant)
+  condition: (_))
 (parameter name: (identifier) @variable.parameter)
 (declare_parameter name: (identifier) @variable.parameter)
 (function_type_parameter name: (identifier) @variable.parameter)

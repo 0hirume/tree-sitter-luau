@@ -7,15 +7,15 @@ const CLASSES: string = "content/en-us/reference/engine/classes"
 const DATATYPES: string = "content/en-us/reference/engine/datatypes"
 const LICENSE: string = "LICENSE"
 
-def query-targets []: nothing -> list<record<path: string, local_aware: bool>> {
+def query-targets []: nothing -> list<record<path: string, source: string>> {
+    let path: path = $ROOT | path join queries highlights.scm
+    let source: string = expected-query $path
+
     [
-        {
-            path: ($ROOT | path join queries highlights.scm)
-            local_aware: true
-        }
+        {path: $path, source: $source}
         {
             path: ($ROOT | path join queries neovim highlights.scm)
-            local_aware: false
+            source: ($source | str replace --all "  (#is-not? local)" "")
         }
     ]
 }
@@ -50,14 +50,8 @@ def render-types [...types: string]: nothing -> string {
     ] | str join (char newline)
 }
 
-def render-value-types [local_aware: bool, ...types: string]: nothing -> string {
+def render-value-types [...types: string]: nothing -> string {
     let rows: list<string> = render-names ...$types
-
-    let end: list<string> = if $local_aware {
-        ["  (#is-not? local))"]
-    } else {
-        [")"]
-    }
 
     [
         "(["
@@ -67,11 +61,11 @@ def render-value-types [local_aware: bool, ...types: string]: nothing -> string 
         "  (#any-of? @type.builtin"
         ...$rows
         "  )"
-        ...$end
+        "  (#is-not? local))"
     ] | str join (char newline)
 }
 
-def generated-query [local_aware: bool]: nothing -> string {
+def generated-query []: nothing -> string {
     let spec: record = open ($ROOT | path join spec roblox-types.json)
 
     let types: list<string> = $spec.types | each {|name| $name | into string }
@@ -79,13 +73,13 @@ def generated-query [local_aware: bool]: nothing -> string {
 
     let body: string = [
         (render-types ...$types)
-        (render-value-types $local_aware ...$value_types)
+        (render-value-types ...$value_types)
     ] | str join "\n\n"
 
     $"; Source: Roblox/creator-docs ($spec.source.revision) (($spec.source.date))\n($body)"
 }
 
-def expected-query [path: path, local_aware: bool]: nothing -> string {
+def expected-query [path: path]: nothing -> string {
     let actual: string = open --raw $path
 
     let start: list<string> = $actual | split row $START
@@ -96,12 +90,12 @@ def expected-query [path: path, local_aware: bool]: nothing -> string {
 
     assert (($end | length) == 2) $"expected exactly one generated end marker in ($path)"
 
-    $"($start.0?)($START)\n(generated-query $local_aware)\n($END)($end.1?)"
+    $"($start.0?)($START)\n(generated-query)\n($END)($end.1?)"
 }
 
 def sync []: nothing -> nothing {
     for target in (query-targets) {
-        expected-query $target.path $target.local_aware | save --force $target.path
+        $target.source | save --force $target.path
     }
 }
 
@@ -113,8 +107,7 @@ def "main sync" []: nothing -> nothing {
 def "main check" []: nothing -> nothing {
     for target in (query-targets) {
         let actual: string = open --raw $target.path
-        let expected: string = expected-query $target.path $target.local_aware
-        assert ($actual == $expected) $"generated output is stale: ($target.path); run `nu scripts/queries.nu sync`"
+        assert ($actual == $target.source) $"generated output is stale: ($target.path); run `nu scripts/queries.nu sync`"
     }
 
     print "Generated queries are current"
@@ -166,18 +159,14 @@ def "main update" [
     let snapshot: record = {
         source: {
             repository: $"https://github.com/Roblox/creator-docs"
-
             revision: (
                 git-value $checkout log "-1" "--format=%H" "--" $CLASSES $DATATYPES
             )
-
             date: (
                 git-value $checkout log "-1" "--format=%cs" "--" $CLASSES $DATATYPES
             )
-
             directories: [$CLASSES $DATATYPES]
         }
-
         types: $types
         value_types: $value_types
     }
