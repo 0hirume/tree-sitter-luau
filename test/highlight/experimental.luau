@@ -67,3 +67,14 @@ else current
 consume(current, selected)
 --      ^^^^^^^ constant
 --               ^^^^^^^^ variable
+
+while const selected = selected do
+--    ^^^^^ keyword.storage.modifier
+--          ^^^^^^^^ constant
+--                     ^^^^^^^^ variable
+  consume(selected)
+  --      ^^^^^^^^ constant
+end
+
+consume(selected)
+--      ^^^^^^^^ variable

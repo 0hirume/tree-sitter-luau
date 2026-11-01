@@ -108,6 +108,7 @@
 (access_qualifier) @keyword.storage.modifier
 (const_declaration "const" @keyword.storage.modifier)
 (const_function_declaration "const" @keyword.storage.modifier)
+(while_statement "const" @keyword.storage.modifier)
 (class_declaration "open" @keyword.storage.modifier)
 (class_declaration "class" @keyword.storage.modifier)
 (if_local_clause
@@ -125,8 +126,10 @@
 (extern_type_declaration
   "declare" @keyword.storage.modifier
   "extern" @keyword.storage.modifier)
-(class_property "public" @keyword.storage.modifier)
-(class_method "public" @keyword.storage.modifier)
+(class_property
+  ["public" "private"] @keyword.storage.modifier)
+(class_method
+  ["public" "private"] @keyword.storage.modifier)
 (class_declaration "extends" @keyword.storage.modifier)
 (extern_type_declaration "extends" @keyword.storage.modifier)
 (extern_type_declaration "with" @keyword.storage.modifier)
@@ -230,6 +233,9 @@
   "const"
   binding: (binding name: (identifier) @constant))
 (if_local_expression_clause
+  "const"
+  binding: (binding name: (identifier) @constant))
+(while_statement
   "const"
   binding: (binding name: (identifier) @constant))
 (parameter name: (identifier) @variable.parameter)

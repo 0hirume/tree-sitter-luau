@@ -1,3 +1,5 @@
 # Intentionally malformed parser fixture: `export 1` is not valid call syntax.
 tests/require/without_config/export_keyword/export_as_function.luau
 tests/golden/analysis/singletons/table_properties_alias_or_parens_is_indexer.luau
+tests/golden/syntax/while-local/error_missing_equals.luau
+tests/golden/syntax/while-local/error_multiple_bindings.luau

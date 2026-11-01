@@ -3,6 +3,7 @@
 [
   (block)
   (function_body)
+  (while_statement)
   (if_local_clause)
   (if_local_expression_clause)
 ] @local.scope
@@ -32,6 +33,10 @@
   binding: (binding name: (identifier) @local.definition @local.definition.constant)
   condition: (_) @local.definition-value)
 (if_local_expression_clause
+  "const"
+  binding: (binding name: (identifier) @local.definition @local.definition.constant)
+  condition: (_) @local.definition-value)
+(while_statement
   "const"
   binding: (binding name: (identifier) @local.definition @local.definition.constant)
   condition: (_) @local.definition-value)

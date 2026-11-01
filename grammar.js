@@ -55,6 +55,7 @@ const CONTEXTUAL_KEYWORDS = [
   "extends",
   "extern",
   "open",
+  "private",
   "public",
   "read",
   "type",
@@ -246,10 +247,19 @@ module.exports = grammar({
     _class_member: ($) => choice($.class_property, $.class_method),
 
     class_property: ($) =>
-      seq("public", field("name", $._identifier), optional(seq(":", field("type", $._type)))),
+      seq(
+        choice("public", "private"),
+        field("name", $._identifier),
+        optional(seq(":", field("type", $._type))),
+      ),
 
     class_method: ($) =>
-      seq(optional("public"), "function", field("name", $._identifier), $.function_body),
+      seq(
+        optional(choice("public", "private")),
+        "function",
+        field("name", $._identifier),
+        $.function_body,
+      ),
 
     function_name: ($) =>
       seq(
@@ -290,6 +300,7 @@ module.exports = grammar({
     while_statement: ($) =>
       seq(
         "while",
+        optional(seq(choice("local", "const"), field("binding", $.binding), "=")),
         field("condition", $._expression),
         "do",
         optional(field("body", $.block)),

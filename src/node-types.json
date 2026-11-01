@@ -3603,6 +3603,16 @@
     "type": "while_statement",
     "named": true,
     "fields": {
+      "binding": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "binding",
+            "named": true
+          }
+        ]
+      },
       "body": {
         "multiple": false,
         "required": false,
@@ -3927,6 +3937,10 @@
   },
   {
     "type": "or",
+    "named": false
+  },
+  {
+    "type": "private",
     "named": false
   },
   {
