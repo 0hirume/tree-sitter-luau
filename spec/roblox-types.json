@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "https://github.com/Roblox/creator-docs",
-    "revision": "ccc2b01d9bf8b85dee2905d1aaff3444fcbd01c5",
-    "date": "2026-11-07",
+    "revision": "9a093fd0ce727b2bdf6ef68dd1bf6ce4b5d0754a",
+    "date": "2026-11-13",
     "directories": [
       "content/en-us/reference/engine/classes",
       "content/en-us/reference/engine/datatypes"
@@ -65,6 +65,8 @@
     "AudioReverb",
     "AudioSearchParams",
     "AudioSpeechToText",
+    "AudioStreamReader",
+    "AudioStreamWriter",
     "AudioTextToSpeech",
     "AudioTremolo",
     "AvatarCreationService",
@@ -666,6 +668,7 @@
     "VideoPlayer",
     "VideoSampler",
     "VideoService",
+    "ViewportCamera",
     "ViewportFrame",
     "VirtualInput",
     "VirtualInputManager",
