@@ -47,7 +47,6 @@
 ] @constant.character.escape
 
 (number) @constant.numeric
-(integer) @constant.numeric.integer
 [
   (boolean)
   (boolean_type)

@@ -227,14 +227,17 @@ module.exports = grammar({
       ),
 
     class_declaration: ($) =>
-      seq(
-        optional("export"),
-        optional("open"),
-        "class",
-        field("name", $._identifier),
-        optional(seq("extends", field("superclass", $.class_reference))),
-        repeat(field("member", $._class_member)),
-        "end",
+      prec(
+        1,
+        seq(
+          optional(choice("export", "local", "const")),
+          optional("open"),
+          "class",
+          field("name", $._identifier),
+          optional(seq("extends", field("superclass", $.class_reference))),
+          repeat(field("member", $._class_member)),
+          "end",
+        ),
       ),
 
     class_reference: ($) =>
@@ -385,7 +388,6 @@ module.exports = grammar({
       choice(
         $.nil,
         $.boolean,
-        $.integer,
         $.number,
         $.string,
         $.vararg_expression,
@@ -528,8 +530,6 @@ module.exports = grammar({
     nil: () => "nil",
 
     boolean: () => choice("true", "false"),
-
-    integer: () => token(choice(/0[xX][0-9a-fA-F_]+i/, /0[bB][01_]+i/, /[0-9][0-9_]*i/)),
 
     number: () =>
       token(

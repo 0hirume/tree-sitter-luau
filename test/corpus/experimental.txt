@@ -66,7 +66,8 @@ export()
       (arguments))))
 
 ==================
-Integer literals
+Invalid integer literal suffixes
+:error
 ==================
 
 local decimal = 1_000i
@@ -75,25 +76,6 @@ local binary = 0b101010i
 
 ---
 
-(source_file
-  (local_declaration
-    (binding_list
-      (binding
-        (identifier)))
-    (expression_list
-      (integer)))
-  (local_declaration
-    (binding_list
-      (binding
-        (identifier)))
-    (expression_list
-      (integer)))
-  (local_declaration
-    (binding_list
-      (binding
-        (identifier)))
-    (expression_list
-      (integer))))
 
 ==================
 User-defined classes

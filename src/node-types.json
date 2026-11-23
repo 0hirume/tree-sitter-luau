@@ -36,10 +36,6 @@
         "named": true
       },
       {
-        "type": "integer",
-        "named": true
-      },
-      {
         "type": "method_call_expression",
         "named": true
       },
@@ -3202,10 +3198,6 @@
             "named": true
           },
           {
-            "type": "integer",
-            "named": true
-          },
-          {
             "type": "method_call_expression",
             "named": true
           },
@@ -3902,10 +3894,6 @@
   {
     "type": "in",
     "named": false
-  },
-  {
-    "type": "integer",
-    "named": true
   },
   {
     "type": "interpolation_content",

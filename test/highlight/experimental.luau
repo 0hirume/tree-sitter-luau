@@ -1,7 +1,7 @@
-export const LIMIT = 64i
+export const LIMIT = 64
 -- <- keyword.storage.modifier
 --     ^ keyword.storage.modifier
---                   ^ constant.numeric.integer
+--                   ^ constant.numeric
 
 export class Child extends package.Base
 -- <- keyword.storage.modifier
